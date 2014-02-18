@@ -112,7 +112,8 @@ h1{
 .header{
     background: #fff;
     color:#b9c4c9;
-    border-radius: 2px
+    border-radius: 2px; 
+    text-align: center;
 }
 .header img{
     max-height: 50px 
