@@ -5,6 +5,9 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="js/jqm/jquery.mobile-1.4.1.min.css">
+        <link rel="stylesheet" href="js/jqm/jquery.mobile.structure-1.4.1.min.css">
+        <link rel="stylesheet" href="js/jqm/jquery.mobile.theme-1.4.1.min.css">
+        <link rel="stylesheet" href="css/style.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 
@@ -14,29 +17,144 @@
     <body>      
 
         <!-- primera pagina  -->
-        <div data-role="page" >
-            <div  class="header">
+        <div data-role="page" id="principal" >
+            <div data-role="header" data-position="fixed" data-theme="c" style="background:#ffffff" align="center">
                 <div class="ui-grid-b">
                     <div class="ui-block-a">
-                        <a href=""><</a>
+                        <a href="">BACK</a>
                     </div >
                     <div class="ui-block-b"> 
-                        <img src="img/imagotipo.png" alt="">
+                        <img src="img/imagotipo.png" height="25%" width="50%">
                     </div>
                     <div class="ui-block-c">   
-                        <a href="">tool</a>
+                        <a href="">TOOLS</a>
                     </div>
+                </div>
+            </div>
+            <div  data-role="content" >
+                <a href="#ciudad" data-role="button"  data-theme="c">    CIUDAD    </a>
+                <a href="#centrocomercial" data-role="button"  data-theme="c">    CENTRO COMERCIAL    </a>
+                <a href="#categoria" data-role="button"  data-theme="c">    CATEGORIA    </a>                
+
+
+                <a href="#ciudad" data-role="button"  data-theme="b">    BUSCAR    </a>
                 
             </div>
+            <footer data-role="footer" data-position="fixed">
+                        <div data-role="navbar" data-iconpos="top" > <!-- /BOTONES  -->
+                            <ul>
+                                <li><a href="#principal"   data-iconpos="top" data-icon="home" data-theme="a">CENTRO COMERCIAL</a></li>
+                            </ul>
+                        </div><!-- /navbar -->  
+            </footer><!-- /footer -->
         </div>
-        <ul  data-role="listview" data-dividertheme="a">
-            <li data-role="list-divider" data-dividertheme="a">sdfsdf</li>
-            <li>s</li>
-            <li>sdsdf</li>
-            <li>TEST - TEST</li>
-        </ul>
+        <!-- pagina  -->
+        <div data-role="page" id="ciudad">
+            <!-- Cabecera  -->
+             <div  data-role="header">
+                <div class="ui-grid-b">
+                    <div class="ui-block-a">
+                        <a href="#principal" data-icon="arrow-l" data-iconpos="notext" data-theme="c">BACK</a>
+                    </div >
+                    <div class="ui-block-b"> 
+                        <img src="img/imagotipo.png" height="25%" width="50%">
+                    </div>
+                    <div class="ui-block-c">   
+                        <a href="">TOOLS</a>
+                    </div>
+                </div>
+             </div>   
+             <!-- Contenido  -->
+             <div  data-role="content">
+                    <ul  data-role="listview" data-dividertheme="a">
+                    <li data-role="list-divider" data-dividertheme="a">CIUDADES</li>
+                    <li>Bogota</li>
+                    <li>Cali</li>
+                    <li>Medellin</li>
+                    </ul>
+             </div>
+             <!-- pie de pagina  -->
+                <footer data-role="footer" data-position="fixed">
+                        <div data-role="navbar" data-iconpos="top" > <!-- /BOTONES  -->
+                            <ul>
+                                <li><a href="#principal"   data-iconpos="top" data-icon="home" data-theme="a">CENTRO COMERCIAL</a></li>
+                            </ul>
+                        </div><!-- /navbar -->  
+                </footer><!-- /footer -->
+        </div>
 
+        <!-- pagina  -->
+        <div data-role="page" id="centrocomercial">
+            <!-- Cabecera  -->
+             <div  data-role="header">
+                <div class="ui-grid-b">
+                    <div class="ui-block-a">
+                        <a href="#principal" data-icon="arrow-l" data-iconpos="notext" data-theme="c">BACK</a>
+                    </div >
+                    <div class="ui-block-b"> 
+                        <img src="img/imagotipo.png" height="25%" width="50%">
+                    </div>
+                    <div class="ui-block-c">   
+                        <a href="">TOOLS</a>
+                    </div>
+                </div>
+             </div>   
+             <!-- Contenido  -->
+             <div  data-role="content">
+                    <ul  data-role="listview" data-dividertheme="a">
+                    <li data-role="list-divider" data-dividertheme="a">CENTRO COMERCIAL</li>
+                    <li>CC Santa Fe</li>
+                    <li>CC Portal de la 80</li>
+                    <li>CC Titan Plaza</li>
+                    <li>CC Bima</li>
+                    <li>CC Gran Estacion</li>
+                    </ul>
+             </div>
+             <!-- pie de pagina  -->
+                <footer data-role="footer" data-position="fixed">
+                        <div data-role="navbar" data-iconpos="top" > <!-- /BOTONES  -->
+                            <ul>
+                                <li><a href="#principal"   data-iconpos="top" data-icon="home" data-theme="a">CENTRO COMERCIAL</a></li>
+                            </ul>
+                        </div><!-- /navbar -->  
+                </footer><!-- /footer -->
+        </div>
 
+        <!-- pagina  -->
+        <div data-role="page" id="categoria">
+            <!-- Cabecera  -->
+             <div  data-role="header">
+                <div class="ui-grid-b">
+                    <div class="ui-block-a">
+                        <a href="#principal" data-icon="arrow-l" data-iconpos="notext" data-theme="c">BACK</a>
+                    </div >
+                    <div class="ui-block-b"> 
+                        <img src="img/imagotipo.png" height="25%" width="50%">
+                    </div>
+                    <div class="ui-block-c">   
+                        <a href="">TOOLS</a>
+                    </div>
+                </div>
+             </div>   
+             <!-- Contenido  -->
+             <div  data-role="content">
+                    <ul  data-role="listview" data-dividertheme="a">
+                    <li data-role="list-divider" data-dividertheme="a">CATEGORIA</li>
+                    <li>Comida</li>
+                    <li>Ropa</li>
+                    <li>Calzado</li>
+                    <li>Joyas</li>
+                    </ul>
+             </div>
+             <!-- pie de pagina  -->
+                <footer data-role="footer" data-position="fixed">
+                        <div data-role="navbar" data-iconpos="top" > <!-- /BOTONES  -->
+                            <ul>
+                                <li><a href="#principal"   data-iconpos="top" data-icon="home" data-theme="a">CENTRO COMERCIAL</a></li>
+                            </ul>
+                        </div><!-- /navbar -->  
+                </footer><!-- /footer -->
+        </div>
         <script src="js/jquery.js"></script>
         <script src="js/jqm/jquery.mobile-1.4.1.min.js"></script>
         <script src="js/index.js"></script>
