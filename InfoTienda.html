@@ -1,20 +1,24 @@
-            <section id="info-tienda">
+            <section id="content-info">
             	<div class="sub-title"><h2>LOCAL CENTRO COMERCIAL</h2></div>
             	<ul>
             	    <li>
             	    	<span id="tienda">Tennis</span> - <span id="cc">CC Bima</span>
             	    </li>
             	    <li id="local">Local N - 222</li>
+            	    <li id="horario">Plazoleta Principal</li>
+            	    <li id="horario">2 piso</li>
             	    <li id="horario">Horario de 8 a 9</li>
             	</ul>
-            	<img src="img/tennis.jpg" alt="">
-            	<input type="button" id="mapa" value="Mapa">
+            	<figure>
+            		<img src="img/tennis.jpg" alt="">
+            	</figure>
+            	<input type="button" id="mapa" onclick="submitMapa(this); return false;" value="Mapa">
             	
             </section>
 
 
             <div class="contend-button">
-                <input type="button" id="shop" onclick="submitSearch(this); return false;" class="button" value="BUSCAR">
+                <input type="button" id="shop" onclick="submitSearch(this); return false;" class="button active" value="BUSCAR">
             </div>  
             <figure class="publicidad">
                 <img src="img/publicidad.png" alt="">

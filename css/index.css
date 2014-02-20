@@ -204,25 +204,103 @@ ul#nav{
 /*=================================================================
 info tienda
 ===================================================================*/
-#info-tienda{
+#content-info{
     background: #fff;
     border-radius: 7px;
-    margin: 0 auto;
+    color: #028fe0;
+    margin: 0 auto 20px;
     width: 95%;
 }
-#info-tienda ul, #info-tienda img{
+.contend-parrafos {
+
+    text-align: center;
+}
+#content-page .contend-parrafos p{
+    color: #028fe0;
+    font-size: 15px;
+    padding: 0;
+    margin: 0;
+}
+#content-info ul, #content-info figure{
     display: inline-block;
-    vertical-align: top;
+    vertical-align: middle;
 
 }
 #mapa{
+    background: #fff;
+    border-bottom: 3px solid rgb(189, 189, 189);
+    border-left: none;
+    border-radius: 7px;
+    border-right: none;
+    border-top: none;
+    box-shadow: -9px 12px 27px 2px #C7C7C7;
+    margin: 12px 20px;
+    color: #00a0ff;
+    font-size: 17px;
+    padding: 16px 46px;
+}
+.sub-title                                              {
+    background: #F1F1F1;
+    border-radius: 7px 7px 0 0;
+    margin: 15px 0;
+    padding: 3px 20px;
+    text-align: left;   
 
 }
-.sub-title{
-    background: #eee;
-
+.sub-title h2{
+    display: inline-block;
+    font-weight: 100;
+    font-size: 13px;
+    margin: 8px 0;
+}
+#content-info ul{
+    color: #0968A0;
+    font-size: 13px;
+    margin: 0;
+    padding: 4px 20px;
+    
+}
+#content-info > figure,#content-info #buttons-cc{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 50%;
 }
 
+#content-info figure img{
+    max-width: 100px;
+}
+.arrow {
+    background: #E2E2E2;
+    border-radius: 0 7px 0 0;
+    display: inline-block;
+    float: right;
+    margin: -3px -20px;
+    padding: 16px 10px;
+
+}
+.arrow span{ 
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #2795C9;
+    display: block;
+
+}
+#content-info #logo-cc, #content-info #mini-mapa{
+
+    width: 48%
+}
+#logo-cc img, #mini-mapa img{
+    margin: 22px 0;
+    max-width: 80%
+}
+#content-info .logo-cc{
+    margin: 22px 0;
+    width: 32%;
+}
+#content-info .logo-cc img{
+    width: 85%
+}
 /*=================================================================
 State
 ===================================================================*/

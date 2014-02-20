@@ -20,7 +20,8 @@
      inicioConf = {
         'ciudad'      : 'Ciudad',
         'cc'          : 'Centro Comercial',
-        'categoria'   : 'Categoria' 
+        'categoria'   : 'Categoria',
+        'tienda'      : 'tienda'
      };
 
 var app = {
@@ -81,10 +82,11 @@ function menu(opcion){
     document.getElementById("titulo").innerHTML='<h2>'+opcion+'<h2';
     document.getElementById("content-page").innerHTML=xhReq.responseText;
 }
-function info(){
+function info(dato){
     menu('infoTienda');
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>'
-    
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
+    inicioConf['tienda']=dato;
 }
 function agregarInicio(){
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>'
@@ -98,6 +100,15 @@ function submitSearch(thisButton){
         document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
     }
 }
+function submitMapa(thisButton){
+
+    menu('infoCC');
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
+    document.getElementById('cc-nombre').innerHTML=inicioConf['cc'];
+    document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda'];
+
+   
+}
 function habilitarSubmit(){
     if (inicioConf['ciudad'] != 'Ciudad' && inicioConf['cc'] != 'Centro Comercial' && inicioConf['categoria'] != 'Categoria' ){
        addClass('active' , document.getElementById('search'));
@@ -105,6 +116,16 @@ function habilitarSubmit(){
        return true ;
     }
     return false;
+}
+function mapasSitio(){
+    menu('mapasCC');
+    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>'
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
+}
+function infoCCButon(){
+    menu('ccInfo');
+    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>'
+    
 }
 
 function addClass( classname, element ) {
