@@ -1,0 +1,28 @@
+
+            <p>BÚSQUEDA POR CENTRO COMERCIAL</p>
+            <nav>
+                <ul id="nav">
+                    <li id="ciudad" onclick="menu('ciudad'); return false;">
+                        Ciudad 
+                        <span>></span>  
+                    </li>
+                    <li id="cc" onclick="menu('cc'); return false;">
+                        Centro Comercial <span>></span>   
+                    </li>
+                    <li id="categoria" onclick="menu('categoria'); return false;">
+                        Categoría<span>></span>  
+                    </li>
+                    
+                </ul>
+            </nav>    
+            <p>BÚSQUEDA POR TIENDA</p>
+            <div class="contend-button">
+                <input type="button" id="search" onclick="submitSearch(this); return false;" class="button" value="BUSCAR">
+            </div>
+            <div id="contend-search" class="contend-button hidden" >
+                <p class="parrafo">BUSQUE LA TIENDA POR NOMBRE</p>
+                <input type="search" class="search" > 
+            </div>
+            <figure class="publicidad">
+                <img src="img/publicidad.png" alt="">
+            </figure>
