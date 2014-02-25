@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 * {
     -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
 }
@@ -151,6 +152,8 @@ ul#nav{
     border-radius: 8px;
     padding: 0;
 
+    height: 100px
+
 }
 #back{
     text-align: left
@@ -226,7 +229,7 @@ info tienda
     vertical-align: middle;
 
 }
-#mapa{
+#mapa, #buttons-cc input{
     background: #fff;
     border-bottom: 3px solid rgb(189, 189, 189);
     border-left: none;
@@ -266,7 +269,11 @@ info tienda
     text-align: center;
     width: 50%;
 }
+#buttons-cc{
 
+    display: inline-block;
+    vertical-align: top;
+}
 #content-info figure img{
     max-width: 100px;
 }
@@ -301,6 +308,29 @@ info tienda
 #content-info .logo-cc img{
     width: 85%
 }
+
+#buttons-cc figure{
+    margin: 0;
+}
+#buttons-cc input{
+    font-size: 12px;
+    margin: 0;
+    padding: 13px 0;
+    width: 100%;
+}
+.cc-logo{
+    max-width: 60px;
+}
+
+#button-cc .input-ccInnfo{
+    margin: 0;
+}
+#buttons-cc img {
+    max-width: 60px !important
+}
+#buttons-cc input:last-child{
+    margin-bottom: 30px
+}
 /*=================================================================
 State
 ===================================================================*/
@@ -311,3 +341,64 @@ State
 .hidden{
     display: none;
 }
+
+
+
+/*Inicio estilos de las capas internas de los iscroll, tanto cuerpo como menu*/
+.scroller {
+    position:absolute; z-index:1;
+    width:100%;
+    padding:0;
+}
+
+.scroller ul {
+    list-style:none;
+    padding:0;
+    margin:0;
+    width:100%;
+    text-align:left;
+}
+
+.scroller li:first-child {
+    padding:0 10px;
+    border-bottom:1px solid #202328;
+    border-top:1px solid #202529;
+    background-color:#202529;
+    height:44px;
+    line-height:44px;
+    font-size:14px;
+    text-align:center;
+}
+
+.scroller li {
+    border-bottom:1px solid #202328;
+    border-top:1px solid #202529;
+    background-color:#181c1f;
+    height:88px;
+    color:#fff
+}
+
+
+.li-menu-activo{
+    background-color:#323a40 !important;
+}
+
+.scroller li a{
+    width:100%;
+    text-decoration: none;
+}
+
+.scroller li .opcion{
+    width:100%;
+    padding-top:20px;
+    font-size:16px;
+    text-shadow: 0 1px #000;
+}
+
+.scroller li .descripcion{
+    width:100%; 
+    padding-top:10px;
+    color:#6e7679;
+    font-size:12px;
+    text-shadow: 0 1px #000;
+    padding-bottom:25px

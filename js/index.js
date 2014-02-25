@@ -23,7 +23,7 @@
         'categoria'   : 'Categoria',
         'tienda'      : 'tienda'
      };
-
+var wrapper = document.getElementById("wrapper");
 var app = {
     // Application Constructor
     
@@ -46,7 +46,11 @@ var app = {
     onDeviceReady: function() {
 
         FastClick.attach(document.body);
-        app.receivedEvent('deviceready');
+        
+
+
+    
+       app.receivedEvent('deviceready');
     },
 
     receivedEvent: function(id) {
@@ -76,11 +80,14 @@ function select(dato, sitio){
     agregarInicio();
 }
 function menu(opcion){ 
+
     xhReq.open("GET", opcion+".html", false);
     xhReq.send(null);
-
+    
     document.getElementById("titulo").innerHTML='<h2>'+opcion+'<h2';
     document.getElementById("content-page").innerHTML=xhReq.responseText;
+    var myScroll;
+    myScroll = new iScroll('wrapper', { hideScrollbar: true });
 }
 function info(dato){
     menu('infoTienda');
