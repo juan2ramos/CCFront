@@ -44,6 +44,10 @@ body {
 li{
     list-style: none
 }
+ul{
+    margin: 0;
+    padding: 0;
+}
 /* Portrait layout (default) */
 .app {
     background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
@@ -151,8 +155,6 @@ ul#nav{
     background: #fff;
     border-radius: 8px;
     padding: 0;
-
-    height: 100px
 
 }
 #back{
@@ -341,64 +343,53 @@ State
 .hidden{
     display: none;
 }
+#wrapper {
+    position: relative;
+    height: 500px;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 8px;
+    padding: 0;
+    /* Prevent native touch events on Windows */
+    -ms-touch-action: none;
 
+    /* Prevent the callout on tap-hold and text selection */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
-
-/*Inicio estilos de las capas internas de los iscroll, tanto cuerpo como menu*/
-.scroller {
-    position:absolute; z-index:1;
-    width:100%;
-    padding:0;
+    /* Prevent text resize on orientation change, useful for web-apps */
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -o-text-size-adjust: none;
+    text-size-adjust: none;
 }
 
-.scroller ul {
-    list-style:none;
-    padding:0;
-    margin:0;
-    width:100%;
-    text-align:left;
+#scroller {
+    position: absolute;
+
+    /* Prevent elements to be highlighted on tap */
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+    /* Put the scroller into the HW Compositing layer right from the start */
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+}
+#contend-iscroller{
+    margin: 20px auto;
 }
 
-.scroller li:first-child {
-    padding:0 10px;
-    border-bottom:1px solid #202328;
-    border-top:1px solid #202529;
-    background-color:#202529;
-    height:44px;
-    line-height:44px;
-    font-size:14px;
-    text-align:center;
-}
-
-.scroller li {
-    border-bottom:1px solid #202328;
-    border-top:1px solid #202529;
-    background-color:#181c1f;
-    height:88px;
-    color:#fff
+@media screen and (max-height: 995px) {
+  #wrapper {
+    height: 280px;
+    }
 }
 
 
-.li-menu-activo{
-    background-color:#323a40 !important;
-}
 
-.scroller li a{
-    width:100%;
-    text-decoration: none;
-}
-
-.scroller li .opcion{
-    width:100%;
-    padding-top:20px;
-    font-size:16px;
-    text-shadow: 0 1px #000;
-}
-
-.scroller li .descripcion{
-    width:100%; 
-    padding-top:10px;
-    color:#6e7679;
-    font-size:12px;
-    text-shadow: 0 1px #000;
-    padding-bottom:25px
