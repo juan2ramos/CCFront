@@ -28,9 +28,7 @@ var app = {
     // Application Constructor
     
     initialize: function() {
-        this.bindEvents();
-
-        
+        this.bindEvents();        
     },
     // Bind Event Listeners
     //
@@ -44,59 +42,57 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-
         FastClick.attach(document.body);
-        
-
-
-    
        app.receivedEvent('deviceready');
     },
 
     receivedEvent: function(id) {
-        console.log('Received Event: ' + id)
+          setTimeout("$(location).attr('href','_layout_home.html?id="+id+"')",3000);
+    }
+};
+function loadHome(){
+//    console.log('Received Event: ' + id); 
         xhReq.open("GET", "inicio.html", false);
         xhReq.send(null);
-        document.getElementById("content-page").innerHTML=xhReq.responseText;
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-        
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-
-    }  
-
-
-};
-function select(dato, sitio){
-
-    xhReq.open("GET", "inicio.html", false);
+        document.getElementById("content-page").innerHTML = xhReq.responseText;
+//        var parentElement = document.getElementById(id);
+//        var listeningElement = parentElement.querySelector('.listening');
+//        var receivedElement = parentElement.querySelector('.received');
+//        
+//        listeningElement.setAttribute('style', 'display:none;');
+//        receivedElement.setAttribute('style', 'display:block;');  
+}
+function select(dato, sitio){    
+      xhReq.open("GET", "inicio.html", false);
+      xhReq.send(null);
+      document.getElementById("content-page").innerHTML=xhReq.responseText;
+      inicioConf[sitio]=dato;
+      habilitarSubmit();
+      agregarInicio();
+}
+function select_trasportType(tipoTransporte, IdCommercial){
+    xhReq.open("GET", "cctransport_info.html?mallid="+IdCommercial, false);
     xhReq.send(null);
     document.getElementById("content-page").innerHTML=xhReq.responseText;
-    inicioConf[sitio]=dato;
-    habilitarSubmit();
-    agregarInicio();
 }
 function menu(opcion){ 
 
     xhReq.open("GET", opcion+".html", false);
     xhReq.send(null);
     
-    document.getElementById("titulo").innerHTML='<h2>'+opcion+'<h2';
+    document.getElementById("titulo").innerHTML='<h2>'+opcion+'<h2>';
     document.getElementById("content-page").innerHTML=xhReq.responseText;
     var myScroll;
     myScroll = new iScroll('wrapper', { hideScrollbar: true });
 }
 function info(dato){
     menu('infoTienda');
-    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>'
+    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
     document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
     inicioConf['tienda']=dato;
 }
 function agregarInicio(){
-    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>'
+    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
     for (var key in inicioConf) {
         document.getElementById(key).innerHTML=inicioConf[key];
     }
@@ -113,11 +109,9 @@ function submitMapa(thisButton){
     document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
     document.getElementById('cc-nombre').innerHTML=inicioConf['cc'];
     document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda'];
-
-   
 }
 function habilitarSubmit(){
-    if (inicioConf['ciudad'] != 'Ciudad' && inicioConf['cc'] != 'Centro Comercial' && inicioConf['categoria'] != 'Categoria' ){
+    if (inicioConf['ciudad'] !== 'Ciudad' && inicioConf['cc'] !== 'Centro Comercial' && inicioConf['categoria'] !== 'Categoria' ){
        addClass('active' , document.getElementById('search'));
        removeClass('hidden',document.getElementById('contend-search'));
        return true ;
@@ -126,21 +120,19 @@ function habilitarSubmit(){
 }
 function mapasSitio(){
     menu('mapasCC');
-    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>'
+    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
     document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
 }
 function infoCCButon(){
     menu('ccInfo');
-    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>'
-    
+    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
 }
-
 function addClass( classname, element ) {
     var cn = element.className;
-    if( cn.indexOf( classname ) != -1 ) {
+    if( cn.indexOf( classname ) !== -1 ) {
         return;
     }
-    if( cn != '' ) {
+    if( cn !== '' ) {
         classname = ' '+classname;
     }
     element.className = cn+classname;
