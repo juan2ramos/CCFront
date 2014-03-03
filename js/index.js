@@ -47,7 +47,7 @@ var app = {
     },
 
     receivedEvent: function(id) {
-          setTimeout("$(location).attr('href','_layout_home.html?id="+id+"')",3000);
+          loadHome();
     }
 };
 function loadHome(){
