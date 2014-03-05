@@ -28,7 +28,8 @@ var app = {
     // Application Constructor
     
     initialize: function() {
-        this.bindEvents();        
+        this.bindEvents();
+        loadHome();
     },
     // Bind Event Listeners
     //
@@ -43,13 +44,24 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         FastClick.attach(document.body);
+         document.addEventListener("backbutton", onBackKeyDown, false);
        app.receivedEvent('deviceready');
     },
 
+
+
     receivedEvent: function(id) {
-          loadHome();
+          
     }
 };
+window.onpopstate = function(event) {
+  
+
+};
+ function onBackKeyDown() {
+    menu("inicio");
+    
+    }
 function loadHome(){
 //    console.log('Received Event: ' + id); 
         xhReq.open("GET", "inicio.html", false);
@@ -66,12 +78,13 @@ function select(dato, sitio){
       xhReq.open("GET", "inicio.html", false);
       xhReq.send(null);
       document.getElementById("content-page").innerHTML=xhReq.responseText;
+     
       inicioConf[sitio]=dato;
       habilitarSubmit();
       agregarInicio();
 }
 function select_trasportType(tipoTransporte, IdCommercial){
-    xhReq.open("GET", "cctransport_info.html?mallid="+IdCommercial, false);
+    xhReq.open("GET", "cctrasnport_info.html", false);
     xhReq.send(null);
     document.getElementById("content-page").innerHTML=xhReq.responseText;
 }
@@ -79,17 +92,28 @@ function menu(opcion){
 
     xhReq.open("GET", opcion+".html", false);
     xhReq.send(null);
-    
     document.getElementById("titulo").innerHTML='<h2>'+opcion+'<h2>';
     document.getElementById("content-page").innerHTML=xhReq.responseText;
+
     var myScroll;
     myScroll = new iScroll('wrapper', { hideScrollbar: true });
 }
 function info(dato){
-    menu('infoTienda');
+    xhReq.open("GET","infoTienda.html", false);
+    xhReq.send(null);
+    document.getElementById("content-page").innerHTML=xhReq.responseText;
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
     document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
     inicioConf['tienda']=dato;
+}
+function publicidad(){
+    xhReq.open("GET","publicidad.html", false);
+    xhReq.send(null);
+    document.getElementById("content-page").innerHTML=xhReq.responseText;
+    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
+  
+    var myScroll2;
+    myScroll2 = new iScroll('wrapper', { hideScrollbar: true });
 }
 function agregarInicio(){
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
@@ -98,14 +122,21 @@ function agregarInicio(){
     }
 } 
 function submitSearch(thisButton){
+
     if(habilitarSubmit()){
         menu('tiendas');
         document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
+    }else{
+
+        removeClass('hidden',document.getElementById('popUpError'));
     }
 }
 function submitMapa(thisButton){
 
-    menu('infoCC');
+    xhReq.open("GET","infoCC.html", false);
+    xhReq.send(null);
+    document.getElementById("content-page").innerHTML=xhReq.responseText;
+    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
     document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
     document.getElementById('cc-nombre').innerHTML=inicioConf['cc'];
     document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda'];
@@ -119,7 +150,14 @@ function habilitarSubmit(){
     return false;
 }
 function mapasSitio(){
-    menu('mapasCC');
+    xhReq.open("GET","mapasCC.html", false);
+    xhReq.send(null);
+    document.getElementById("content-page").innerHTML=xhReq.responseText;
+    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
+}
+function comoLlegar(){
+    menu('cctransport_list');
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
     document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
 }
@@ -142,4 +180,23 @@ function removeClass( classname, element ) {
     var rxp = new RegExp( "\\s?\\b"+classname+"\\b", "g" );
     cn = cn.replace( rxp, '' );
     element.className = cn;
+}
+function closePopUp(){
+
+  addClass('hidden',document.getElementById('popUpError'));
+}
+
+/*
+Estados
+*/  
+
+function okError(){
+    addClass('hidden',document.getElementById('popUpError'));
+}
+function mapaZoom(){
+    
+    removeClass('hidden',document.getElementById('popUpError'));
+    var myScroll1 = new iScroll('wrappers', { zoom:true });
+    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+     document.addEventListener('DOMContentLoaded', loaded, false);
 }

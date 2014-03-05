@@ -15,14 +15,23 @@
                     
                 </ul>
             </nav>    
-            <p>BÚSQUEDA POR TIENDA</p>
+           
             <div class="contend-button">
                 <input type="button" id="search" onclick="submitSearch(this); return false;" class="button" value="BUSCAR">
             </div>
-            <div id="contend-search" class="contend-button hidden" >
+            <div id="contend-search" class="contend-button" >
                 <p class="parrafo">BUSQUE LA TIENDA POR NOMBRE</p>
-                <input type="search" class="search" > 
+                <div id="contend-search-button">
+                    <input type="search" class="search" > 
+                    <input type="submit" class="submit-search" value="">
+                </div>
             </div>
-            <figure class="publicidad">
+            <figure class="publicidad" onclick="publicidad(); return false;">
                 <img src="img/publicidad.png" alt="">
             </figure>
+            <div id="popUpError" class="error hidden">
+                <div class="message">
+                    <p>Debes seleccionar todas las opciones</p>
+                    <button onclick="okError(); return false;">OK</button>
+                </div>
+            </div>

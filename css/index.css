@@ -127,14 +127,25 @@ h1{
     border-radius: 0 0 8px 8px; 
     text-align: center;
 }
-#titulo, .header a {
+#titulo,#info ,#back{
     display: inline-block;
     vertical-align: middle;
     text-align: center;
     width: 32%
 }
-.header img{
+#logo img{
     max-height: 50px 
+}
+#info{
+    margin: 0;
+    padding-right: 5px; 
+    text-align: right;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+#info img{
+    max-width: 25px;
 }
 nav{
     padding: 0 5px;
@@ -160,18 +171,21 @@ ul#nav{
 #back{
     text-align: left
 }
+#back span{ 
+    font-size: 15px;
+    padding-left: 5px;
+}
 #content-page p{
     color: #fff;
-    font-size: 16px;
+    font-size: 15px;
     padding-left: 30px;
 }
-#info{
-    text-align: right;
-}
+
 #logo{
-    margin: 0;
+    margin: 5px 0 0;
 }
 .contend-button{
+    padding: 15px 0 0;  
     text-align: center;
     width: 100%
 }
@@ -187,12 +201,30 @@ ul#nav{
     width: 90%;
 
 }
+#contend-search-button{
+    position: relative;
+}
+#contend-search-button .submit-search{
+    background: url(../img/search.jpg) no-repeat center top;
+    background-size: 25px 25px;
+    border: none;
+    left: 25px;
+    height: 32px;
+    position: absolute;
+    top: 12px;
+    width: 29px;
+
+}
 #content-page  .contend-button .parrafo{
+    margin: 0 0 13px 0;
     padding: 0;
+
 }
 
 .publicidad{
+    margin: 10px auto;
     text-align: center;
+    width: 90%;
 }
 .publicidad img{
     max-width: 100%
@@ -202,7 +234,7 @@ ul#nav{
     border-radius: 5px;
     color: #aaa;
     font-size: 1.5em;
-    padding: 10px;
+    padding: 10px 8px 10px 40px;
     width: 90%;
 
 }
@@ -263,13 +295,17 @@ info tienda
     font-size: 13px;
     margin: 0;
     padding: 4px 20px;
+    width: 48%;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
     
 }
 #content-info > figure,#content-info #buttons-cc{
     margin: 0;
-    padding: 0;
+    max-width: 49%;
     text-align: center;
-    width: 50%;
+    width: 49%;
 }
 #buttons-cc{
 
@@ -384,11 +420,137 @@ State
 #contend-iscroller{
     margin: 20px auto;
 }
+#contend-iscroller{
 
+}
 @media screen and (max-height: 995px) {
   #wrapper {
-    height: 280px;
+    min-height: 210px;
+    height: 210px;
     }
 }
+.error, .popUp-image{
+    background: rgba(0,0,0,0.5);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000
 
+}
+.message{
+    background: #fff;
+    border-radius:8px;
+    color:#000;
+    left: 50%;
+    margin: -30px -35%;
+    position: absolute;
+    top: 50%;
+    width: 70%;
+}
+.message button{
+    background-color: #e5e5e5;
+    border:none;
+    border-radius: 0 0 8px 8px;
+    color: #019eef;
+    height: 30px;
+    margin: 0;
+    width: 100%;
+}
+#content-page .message p{
 
+    color: #777;
+    padding: 0;
+    text-align: center;
+}
+#image-zoom{
+    margin-left: 5%;
+    padding: 0;
+    position: absolute;
+    width: 90%;
+    z-index: 1000;
+}
+#image-zoom img{
+    max-width: 100%;
+}
+#close{
+    color:#2B729C;
+    font-size: 3.5em;
+    font-weight: bold;
+    position: absolute;
+    right: 8px;
+    z-index: 10000
+}
+#back-false{
+    background-color: #e8eaeb;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    width: 100%;
+    top: 0;
+    z-index: -1;
+}
+#header-transport{
+    background: url(../img/bus.png) no-repeat;
+    background-size: 63px 70px;
+    margin: 0 auto;
+    padding: 16px 60px;
+    width: 97%;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+#header-transport h2, #header-transport h3{
+    color: rgb(109, 109, 109);
+    font-weight: 100;
+    margin: 0;
+}
+#contend-transport h2{
+    color: rgb(124, 124, 124);
+    font-size: 14px;
+    font-weight: 100;
+}
+#contend-transport p{
+    color: rgb(167, 167, 167);
+    font-size: 12px;
+    text-align: left;
+    padding: 0;
+}
+#header-transport h3{
+    font-weight: 100;
+    font-size: 10px;
+    margin: 0;
+}    
+#contend-transport{
+    border-left: 5px solid #0191e6;
+    margin: 0 auto;
+    padding: 0 10px;
+    width: 79%;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+#info-publicidad{
+    margin: 10px auto;
+    padding: 20px 10px;
+    width: 95%;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+#info-publicidad h2{
+    color: rgb(102, 102, 102);
+    font-size: 13px;
+    font-weight: 100;
+    padding: 20px 15px 0px 30px;
+}
+#info-publicidad p{
+    color: gray;   
+    font-size: 12px;
+    padding: 10px 30px;
+    text-align: left;
+}
+.delete-padding{
+    padding: 0;
+}
