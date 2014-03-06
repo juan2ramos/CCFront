@@ -1,3 +1,12 @@
+/**
+ * 
+ * Define the url host where is located 
+ * 
+ */
+var hostURLService = "http://apliko.co/apliko_ccback/apiservices/";
+
+
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -89,15 +98,160 @@ function select_trasportType(tipoTransporte, IdCommercial){
     document.getElementById("content-page").innerHTML=xhReq.responseText;
 }
 function menu(opcion){ 
-
     xhReq.open("GET", opcion+".html", false);
     xhReq.send(null);
     document.getElementById("titulo").innerHTML='<h2>'+opcion+'<h2>';
-    document.getElementById("content-page").innerHTML=xhReq.responseText;
-
+    document.getElementById("content-page").innerHTML=xhReq.responseText;    
     var myScroll;
     myScroll = new iScroll('wrapper', { hideScrollbar: true });
 }
+function OpenCityListView(){           
+    $.ajax({
+                url: hostURLService + "api_city.php",
+                type: "POST",
+                dataType: "json",
+                data: { methodname: "getcitylist" },
+                beforeSend: function () {                    
+                    xhReq.open("GET", "ciudad.html", false);
+                    xhReq.send(null);
+                    document.getElementById("titulo").innerHTML='<h2>Ciudad<h2>';
+                    document.getElementById("content-page").innerHTML=xhReq.responseText;    
+                    var myScroll;
+                    myScroll = new iScroll('wrapper', { hideScrollbar: true });
+                },
+                success: function (data) {
+                    var oUL = document.getElementById('CityList');
+                    for(var index in data){
+                        var city = data[index];
+                        var oLI = document.createElement('li');
+                        oLI.setAttribute("id", city.Id); 
+                        oLI.setAttribute("onclick", "select('"+city.Id+"**"+city.Name+"', 'ciudad'); return false;"); 
+                        oLI.appendChild(document.createTextNode(city.Name));
+                        oUL.insertBefore(oLI, oUL.childNodes[0]);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Error " + textStatus);
+                    alert("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });
+}
+
+function OpenMallListView(){           
+    $.ajax({
+                url: hostURLService + "api_mall.php",
+                type: "POST",
+                dataType: "json",
+                data: { methodname: "getmalllistbycityid", cityid: inicioConf["ciudad"].split('**')[0] },
+                beforeSend: function () {                    
+                    xhReq.open("GET", "cc.html", false);
+                    xhReq.send(null);
+                    document.getElementById("titulo").innerHTML='<h2>Centro Comercial<h2>';
+                    document.getElementById("content-page").innerHTML=xhReq.responseText;    
+                    var myScroll;
+                    myScroll = new iScroll('wrapper', { hideScrollbar: true });
+                },
+                success: function (data) {
+                    var oUL = document.getElementById('MallList');
+                    for(var index in data){
+                        var mall = data[index];
+                        var oLI = document.createElement('li');
+                        oLI.setAttribute("id", mall.Id); 
+                        oLI.setAttribute("onclick", "select('"+mall.Id+"**"+mall.Name+"', 'cc'); return false;"); 
+                        oLI.appendChild(document.createTextNode(mall.Name));
+                        oUL.insertBefore(oLI, oUL.childNodes[0]);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Error " + textStatus);
+                    alert("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });
+}
+
+function OpenMallCateogryListView(){           
+    $.ajax({
+                url: hostURLService + "api_mall_category.php",
+                type: "POST",
+                dataType: "json",
+                data: { methodname: "getcategorylistbymallid", mallid: inicioConf["cc"].split('**')[0] },
+                beforeSend: function () {                    
+                    xhReq.open("GET", "categoria.html", false);
+                    xhReq.send(null);
+                    document.getElementById("titulo").innerHTML='<h2>Categoria<h2>';
+                    document.getElementById("content-page").innerHTML=xhReq.responseText;    
+                    var myScroll;
+                    myScroll = new iScroll('wrapper', { hideScrollbar: true });
+                },
+                success: function (data) {
+                    var oUL = document.getElementById('MallCategoryList');
+                    for(var index in data){
+                        var mall = data[index];
+                        var oLI = document.createElement('li');
+                        oLI.setAttribute("id", mall.Id); 
+                        oLI.setAttribute("onclick", "select('"+mall.Id+"**"+mall.Name+"', 'categoria'); return false;"); 
+                        oLI.appendChild(document.createTextNode(mall.Name));
+                        oUL.insertBefore(oLI, oUL.childNodes[0]);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Error " + textStatus);
+                    alert("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });
+}
+
+function OpenShopResultView(){
+    
+    var _mallid = inicioConf["cc"].split('**')[0];
+    var _mallcategoryid =inicioConf["categoria"].split('**')[0];
+    $.ajax({
+                url: hostURLService + "api_shop.php",
+                type: "POST",
+                dataType: "json",
+                data: { methodname: "getshoplistbyparams"
+                    , name: "" 
+                    , mallid: _mallid
+                    , mallcategoryid: _mallcategoryid
+                },
+                beforeSend: function () {                    
+                    xhReq.open("GET", "tiendas.html", false);
+                    xhReq.send(null);
+                    document.getElementById("titulo").innerHTML='<h2>Tiendas<h2>';
+                    document.getElementById("content-page").innerHTML=xhReq.responseText;    
+                    var myScroll;
+                    myScroll = new iScroll('wrapper', { hideScrollbar: true });
+                },
+                success: function (data) {
+                    var oUL = document.getElementById('ShopResultList');
+                    for(var index in data){
+                        var shop = data[index];
+                        var oLI = document.createElement('li');
+                        oLI.setAttribute("id", shop.Id); 
+                        oLI.setAttribute("onclick", "ShopInfo('"+shop.Id+"','"+mall.Name+"'); return false;"); 
+                        oLI.appendChild(document.createTextNode(mall.Name));
+                        oUL.insertBefore(oLI, oUL.childNodes[0]);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Error " + textStatus);
+                    alert("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });
+}
+
 function info(dato){
     xhReq.open("GET","infoTienda.html", false);
     xhReq.send(null);
@@ -117,17 +271,24 @@ function publicidad(){
 }
 function agregarInicio(){
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    for (var key in inicioConf) {
-        document.getElementById(key).innerHTML=inicioConf[key];
-    }
+    for (var key in inicioConf) {  
+        var label = inicioConf[key];
+        if(label.indexOf("**") !== -1)
+        {
+            var elements = label.split('**');
+            label = elements[1];
+        }        
+        if(key !== 'tienda')
+        {
+            document.getElementById(key).innerHTML = label;
+        }
+    }    
 } 
 function submitSearch(thisButton){
-
     if(habilitarSubmit()){
-        menu('tiendas');
-        document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
+        OpenShopResultView();
+        document.getElementById('shop').value = 'Info ' + inicioConf['tienda'].split("**")[1];                
     }else{
-
         removeClass('hidden',document.getElementById('popUpError'));
     }
 }
