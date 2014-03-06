@@ -27,10 +27,26 @@ var hostURLService = "http://apliko.co/apliko_ccback/apiservices/";
  */
  var xhReq = new XMLHttpRequest(),
      inicioConf = {
-        'ciudad'      : 'Ciudad',
-        'cc'          : 'Centro Comercial',
-        'categoria'   : 'Categoria',
-        'tienda'      : 'tienda'
+        'ciudad'    : {
+            'name'          : 'Ciudad',
+            'status'        : 0, 
+            'nameDefualt'   : 'Ciudad'
+        },
+        'cc'        : {
+            'name'          : 'Centro Comercial',
+            'status'        : 0,
+            'nameDefualt'   : 'Centro Comercial'
+        },
+        'categoria' : {
+            'name'          : 'Categoria',          
+            'status'        : 0, 
+            'nameDefualt'   : 'Categoria'
+        },
+        'tienda'    : {
+            'name'          : 'tienda',             
+            'status'        : 0, 
+            'nameDefualt'   : 'tienda'
+        }
      };
 var wrapper = document.getElementById("wrapper");
 var app = {
@@ -38,7 +54,10 @@ var app = {
     
     initialize: function() {
         this.bindEvents();
+        FastClick.attach(document.body);
+         document.addEventListener("backbutton", onBackKeyDown, false);
         loadHome();
+        checkConnection();
     },
     // Bind Event Listeners
     //
@@ -52,8 +71,7 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        FastClick.attach(document.body);
-         document.addEventListener("backbutton", onBackKeyDown, false);
+        
        app.receivedEvent('deviceready');
     },
 
@@ -68,7 +86,19 @@ window.onpopstate = function(event) {
 
 };
  function onBackKeyDown() {
-    menu("inicio");
+    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
+    for (var key in inicioConf) {  
+        var label = inicioConf[key]['name'];
+        if(label.indexOf("**") !== -1)
+        {
+            var elements = label.split('**');
+            label = elements[1];
+        }        
+        if(key !== 'tienda')
+        {
+            document.getElementById(key).innerHTML = label;
+        }
+    }
     
     }
 function loadHome(){
@@ -88,7 +118,7 @@ function select(dato, sitio){
       xhReq.send(null);
       document.getElementById("content-page").innerHTML=xhReq.responseText;
      
-      inicioConf[sitio]=dato;
+      inicioConf[sitio]['name']=dato;
       habilitarSubmit();
       agregarInicio();
 }
@@ -105,12 +135,14 @@ function menu(opcion){
     var myScroll;
     myScroll = new iScroll('wrapper', { hideScrollbar: true });
 }
-function OpenCityListView(){           
-    $.ajax({
+function OpenCityListView(){       
+        var term = {methodname:"getcitylist"};  
+         clean(0);
+        $.ajax({
                 url: hostURLService + "api_city.php",
-                type: "POST",
-                dataType: "json",
-                data: { methodname: "getcitylist" },
+                type:'POST', 
+                data:term, 
+                dataType:'jsonp',
                 beforeSend: function () {                    
                     xhReq.open("GET", "ciudad.html", false);
                     xhReq.send(null);
@@ -120,6 +152,7 @@ function OpenCityListView(){
                     myScroll = new iScroll('wrapper', { hideScrollbar: true });
                 },
                 success: function (data) {
+                    console.log(data);
                     var oUL = document.getElementById('CityList');
                     for(var index in data){
                         var city = data[index];
@@ -131,8 +164,8 @@ function OpenCityListView(){
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    alert("Error " + textStatus);
-                    alert("Error" + errorThrown);
+                    console.log("Error " + textStatus);
+                    console.log("Error" + errorThrown);
                 },
                 complete: function () {
                     
@@ -140,12 +173,14 @@ function OpenCityListView(){
             });
 }
 
-function OpenMallListView(){           
+function OpenMallListView(){ 
+    clean(1);          
     $.ajax({
+
                 url: hostURLService + "api_mall.php",
                 type: "POST",
-                dataType: "json",
-                data: { methodname: "getmalllistbycityid", cityid: inicioConf["ciudad"].split('**')[0] },
+                dataType: "jsonp",
+                data: { methodname: "getmalllistbycityid", cityid: inicioConf["ciudad"]['name'].split('**')[0] },
                 beforeSend: function () {                    
                     xhReq.open("GET", "cc.html", false);
                     xhReq.send(null);
@@ -166,8 +201,8 @@ function OpenMallListView(){
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    alert("Error " + textStatus);
-                    alert("Error" + errorThrown);
+                    console.log("Error " + textStatus);
+                    console.log("Error" + errorThrown);
                 },
                 complete: function () {
                     
@@ -179,8 +214,8 @@ function OpenMallCateogryListView(){
     $.ajax({
                 url: hostURLService + "api_mall_category.php",
                 type: "POST",
-                dataType: "json",
-                data: { methodname: "getcategorylistbymallid", mallid: inicioConf["cc"].split('**')[0] },
+                dataType: "jsonp",
+                data: { methodname: "getcategorylistbymallid", mallid: inicioConf["cc"]['name'].split('**')[0] },
                 beforeSend: function () {                    
                     xhReq.open("GET", "categoria.html", false);
                     xhReq.send(null);
@@ -212,8 +247,8 @@ function OpenMallCateogryListView(){
 
 function OpenShopResultView(){
     
-    var _mallid = inicioConf["cc"].split('**')[0];
-    var _mallcategoryid =inicioConf["categoria"].split('**')[0];
+    var _mallid = inicioConf["cc"]['name'].split('**')[0];
+    var _mallcategoryid =inicioConf["categoria"]['name'].split('**')[0];
     $.ajax({
                 url: hostURLService + "api_shop.php",
                 type: "POST",
@@ -243,8 +278,8 @@ function OpenShopResultView(){
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    alert("Error " + textStatus);
-                    alert("Error" + errorThrown);
+                    console.log("Error " + textStatus);
+                    console.log("Error" + errorThrown);
                 },
                 complete: function () {
                     
@@ -257,8 +292,8 @@ function info(dato){
     xhReq.send(null);
     document.getElementById("content-page").innerHTML=xhReq.responseText;
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
-    inicioConf['tienda']=dato;
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
+    inicioConf['tienda']['name']=dato;
 }
 function publicidad(){
     xhReq.open("GET","publicidad.html", false);
@@ -272,7 +307,7 @@ function publicidad(){
 function agregarInicio(){
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
     for (var key in inicioConf) {  
-        var label = inicioConf[key];
+        var label = inicioConf[key]['name'];
         if(label.indexOf("**") !== -1)
         {
             var elements = label.split('**');
@@ -287,7 +322,7 @@ function agregarInicio(){
 function submitSearch(thisButton){
     if(habilitarSubmit()){
         OpenShopResultView();
-        document.getElementById('shop').value = 'Info ' + inicioConf['tienda'].split("**")[1];                
+        document.getElementById('shop').value = 'Info ' + inicioConf['tienda']['name'].split("**")[1];                
     }else{
         removeClass('hidden',document.getElementById('popUpError'));
     }
@@ -298,12 +333,12 @@ function submitMapa(thisButton){
     xhReq.send(null);
     document.getElementById("content-page").innerHTML=xhReq.responseText;
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
-    document.getElementById('cc-nombre').innerHTML=inicioConf['cc'];
-    document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda'];
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
+    document.getElementById('cc-nombre').innerHTML=inicioConf['cc']['name'];
+    document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'];
 }
 function habilitarSubmit(){
-    if (inicioConf['ciudad'] !== 'Ciudad' && inicioConf['cc'] !== 'Centro Comercial' && inicioConf['categoria'] !== 'Categoria' ){
+    if (inicioConf['ciudad']['name'] !== 'Ciudad' && inicioConf['cc']['name'] !== 'Centro Comercial' && inicioConf['categoria']['name'] !== 'Categoria' ){
        addClass('active' , document.getElementById('search'));
        removeClass('hidden',document.getElementById('contend-search'));
        return true ;
@@ -315,12 +350,12 @@ function mapasSitio(){
     xhReq.send(null);
     document.getElementById("content-page").innerHTML=xhReq.responseText;
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
 }
 function comoLlegar(){
     menu('cctransport_list');
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc'];
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
 }
 function infoCCButon(){
     menu('ccInfo');
@@ -371,9 +406,52 @@ function mapaZoom(){
      document.addEventListener('DOMContentLoaded', loaded, false);
 }
 
+function checkConnection() {
+            var networkState = navigator.network.connection.type;
 
+            var states = {};
+            states[Connection.UNKNOWN]  = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI]     = 'WiFi connection';
+            states[Connection.CELL_2G]  = 'Cell 2G connection';
+            states[Connection.CELL_3G]  = 'Cell 3G connection';
+            states[Connection.CELL_4G]  = 'Cell 4G connection';
+            states[Connection.CELL]     = 'Cell generic connection';
+            states[Connection.NONE]     = 'No network connection';
 
+            if(networkState == Connection.NONE){
+                alert("No posee Conexión a internet");
+                return false;
+            }
+            return true;
 
+        }
+
+function clean (index){
+    var i = 0;
+    for(var key in inicioConf){ 
+            if (i > index) {
+                inicioConf[key]['name'] = inicioConf[key]['nameDefualt'];
+                inicioConf[key]['status'] = 0;
+                console.log(key);
+                if(key !== 'tienda'){
+                    document.getElementById(key).innerHTML = inicioConf[key]['name'];
+                }
+            }    
+          i++;      
+    }
+
+}
+function checkBack(index){
+    var i = 0;
+    for(var key in inicioConf){ 
+            if (i == index) break;
+            if (inicioConf[key]['status'] == 0)
+                return false;
+                
+    }
+    return true;
+}
 function mail(){
     var term= {button:"cars"}; 
     $.ajax({ 
