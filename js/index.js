@@ -190,6 +190,15 @@ function closePopUp(){
 Estados
 */  
 
+function config(url){
+    xhReq.open("GET", url+".html", false);
+    xhReq.send(null);
+    document.getElementById("content-page").innerHTML=xhReq.responseText;
+    document.getElementById("content-page").innerHTML=xhReq.responseText;
+
+    var myScroll3;
+    myScroll3 = new iScroll('wrapper', { hideScrollbar: true });
+}
 function okError(){
     addClass('hidden',document.getElementById('popUpError'));
 }
@@ -200,3 +209,27 @@ function mapaZoom(){
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
      document.addEventListener('DOMContentLoaded', loaded, false);
 }
+
+
+
+
+function mail(){
+    var term= {button:"cars"}; 
+    $.ajax({ 
+        url:'http://apliko.co/reply.php', 
+        type:'POST', 
+        data:term, 
+        dataType:'jsonp', 
+        error:function(jqXHR,text_status,strError){ 
+            alert("jajaj")
+            console.log(jqXHR);
+        }, 
+        timeout:60000, 
+        success:function(data){ 
+            $("#result").html(""); 
+                for(var i in data){ 
+                    $("#result").append("<li>"+data[i]+"</li>"); 
+                } 
+            } 
+        });
+    }

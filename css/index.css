@@ -551,6 +551,96 @@ State
     padding: 10px 30px;
     text-align: left;
 }
+#contend-iscroller .config-apliko{
+    height: 250px;
+}
+#contend-iscroller .config-apliko li{
+    font-size: 1.2em
+}
+#recomienda p{
+    margin: 40px;
+    padding: 0;
+    text-align: center;
+}
+#recomienda .button-net{
+    background: #fff;
+    border-bottom: 3px solid rgb(189, 189, 189);
+    border-left: none;
+    border-radius: 7px;
+    border-right: none;
+    border-top: none;
+    color: #00a0ff; 
+    margin: 12px 0% 0 6.5%;
+    font-size: 12px;
+    padding: 16px;
+    width: 40%;
+}
+#mejorar h2, #mejorar p{
+    color: #fff;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+#mejorar h2{
+    margin: 29px 0 12px;
+}
+
+
+#mejorar textarea{
+    background: #fff;
+    border: none;
+    border-radius: 8px;
+    display: block;
+    height: 181px;
+    margin: 20px auto;
+    padding: 15px;
+    width: 90%;
+    -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+             box-sizing: border-box; 
+}
+#mejorar button{
+    background: #fff;
+    border-bottom: 3px solid rgb(189, 189, 189);
+    border-left: none;
+    border-radius: 7px;
+    border-right: none;
+    border-top: none;
+    color: #00a0ff; 
+    display: block;
+    margin: 0 auto;
+    font-size: 12px;
+    padding: 16px;
+    width: 90%;
+}
+#content-page .tittle{
+    color: #fff;
+    font-size: 13px;
+    margin: 10px auto;
+    width: 90%;
+}
+#acerca figure{
+    display: block;
+    margin: 0; 
+    padding: 0;
+    text-align: right;
+    width: 100%;
+}
+#acerca figure img{
+    max-width: 60px;
+}
+#acerca, #terminos{
+    background:#fff;
+    border-radius:8px ;
+    margin: 0 auto;
+    padding: 10px 20px;
+    width: 90%;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
+}
 .delete-padding{
     padding: 0;
 }
