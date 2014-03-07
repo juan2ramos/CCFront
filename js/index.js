@@ -86,19 +86,12 @@ window.onpopstate = function(event) {
 
 };
  function onBackKeyDown() {
+    xhReq.open("GET", "inicio.html", false);
+    xhReq.send(null);
+    document.getElementById("content-page").innerHTML = xhReq.responseText;
+//        
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    for (var key in inicioConf) {  
-        var label = inicioConf[key]['name'];
-        if(label.indexOf("**") !== -1)
-        {
-            var elements = label.split('**');
-            label = elements[1];
-        }        
-        if(key !== 'tienda')
-        {
-            document.getElementById(key).innerHTML = label;
-        }
-    }
+    agregarInicio();
     
     }
 function loadHome(){
@@ -119,6 +112,7 @@ function select(dato, sitio){
       document.getElementById("content-page").innerHTML=xhReq.responseText;
      
       inicioConf[sitio]['name']=dato;
+      inicioConf[sitio]['status']=1;
       habilitarSubmit();
       agregarInicio();
 }
@@ -152,7 +146,6 @@ function OpenCityListView(){
                     myScroll = new iScroll('wrapper', { hideScrollbar: true });
                 },
                 success: function (data) {
-                    console.log(data);
                     var oUL = document.getElementById('CityList');
                     for(var index in data){
                         var city = data[index];
@@ -174,7 +167,8 @@ function OpenCityListView(){
 }
 
 function OpenMallListView(){ 
-    clean(1);          
+    clean(1);       
+    if(checkBack(1)){  
     $.ajax({
 
                 url: hostURLService + "api_mall.php",
@@ -208,9 +202,15 @@ function OpenMallListView(){
                     
                 }
             });
+    }else{
+        removeClass('hidden',document.getElementById('popUpError'));
+        document.getElementById('error-message').innerHTML = "Debes seleccionar la ciudad";
+    
+    }
 }
 
-function OpenMallCateogryListView(){           
+function OpenMallCateogryListView(){
+    if(checkBack(2)){            
     $.ajax({
                 url: hostURLService + "api_mall_category.php",
                 type: "POST",
@@ -225,15 +225,22 @@ function OpenMallCateogryListView(){
                     myScroll = new iScroll('wrapper', { hideScrollbar: true });
                 },
                 success: function (data) {
-                    var oUL = document.getElementById('MallCategoryList');
-                    for(var index in data){
-                        var mall = data[index];
-                        var oLI = document.createElement('li');
-                        oLI.setAttribute("id", mall.Id); 
-                        oLI.setAttribute("onclick", "select('"+mall.Id+"**"+mall.Name+"', 'categoria'); return false;"); 
-                        oLI.appendChild(document.createTextNode(mall.Name));
-                        oUL.insertBefore(oLI, oUL.childNodes[0]);
+                    if ($.isEmptyObject(data)) {
+                        onBackKeyDown();
+                        removeClass('hidden',document.getElementById('popUpError'));
+                        document.getElementById('error-message').innerHTML = "No hay categorías";
+                    }else{
+                        var oUL = document.getElementById('MallCategoryList');
+                        for(var index in data){
+                            var mall = data[index];
+                            var oLI = document.createElement('li');
+                            oLI.setAttribute("id", mall.Id); 
+                            oLI.setAttribute("onclick", "select('"+mall.Id+"**"+mall.Name+"', 'categoria'); return false;"); 
+                            oLI.appendChild(document.createTextNode(mall.Name));
+                            oUL.insertBefore(oLI, oUL.childNodes[0]);
+                        }
                     }
+                    
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     alert("Error " + textStatus);
@@ -243,6 +250,10 @@ function OpenMallCateogryListView(){
                     
                 }
             });
+    }else{
+        removeClass('hidden',document.getElementById('popUpError'));
+        document.getElementById('error-message').innerHTML = "Debes seleccionar todas las opciones";
+    }
 }
 
 function OpenShopResultView(){
@@ -433,12 +444,11 @@ function clean (index){
             if (i > index) {
                 inicioConf[key]['name'] = inicioConf[key]['nameDefualt'];
                 inicioConf[key]['status'] = 0;
-                console.log(key);
                 if(key !== 'tienda'){
                     document.getElementById(key).innerHTML = inicioConf[key]['name'];
                 }
             }    
-          i++;      
+          i++;     
     }
 
 }
@@ -446,9 +456,11 @@ function checkBack(index){
     var i = 0;
     for(var key in inicioConf){ 
             if (i == index) break;
-            if (inicioConf[key]['status'] == 0)
+            console.log(i + " -- " + index);
+            if (inicioConf[key]['status'] == 0){
                 return false;
-                
+            }
+             i++;   
     }
     return true;
 }
@@ -460,7 +472,7 @@ function mail(){
         data:term, 
         dataType:'jsonp', 
         error:function(jqXHR,text_status,strError){ 
-            alert("jajaj")
+            
             console.log(jqXHR);
         }, 
         timeout:60000, 
@@ -472,3 +484,7 @@ function mail(){
             } 
         });
     }
+function loading(){
+    var template = "";
+    
+}    
