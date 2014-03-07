@@ -278,14 +278,20 @@ function OpenShopResultView(){
                     myScroll = new iScroll('wrapper', { hideScrollbar: true });
                 },
                 success: function (data) {
-                    var oUL = document.getElementById('ShopResultList');
-                    for(var index in data){
-                        var shop = data[index];
-                        var oLI = document.createElement('li');
-                        oLI.setAttribute("id", shop.Id); 
-                        oLI.setAttribute("onclick", "ShopInfo('"+shop.Id+"','"+mall.Name+"'); return false;"); 
-                        oLI.appendChild(document.createTextNode(mall.Name));
-                        oUL.insertBefore(oLI, oUL.childNodes[0]);
+                     if ($.isEmptyObject(data)) {
+                        onBackKeyDown();
+                        removeClass('hidden',document.getElementById('popUpError'));
+                        document.getElementById('error-message').innerHTML = "No hay tiendas.";
+                    }else{
+                        var oUL = document.getElementById('ShopResultList');
+                        for(var index in data){
+                            var shop = data[index];
+                            var oLI = document.createElement('li');
+                            oLI.setAttribute("id", shop.Id); 
+                            oLI.setAttribute("onclick", "OpenShopInfoView('"+shop.Id+"','"+shop.Name+"'); return false;"); 
+                            oLI.appendChild(document.createTextNode(shop.Name));
+                            oUL.insertBefore(oLI, oUL.childNodes[0]);
+                        }
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -296,6 +302,85 @@ function OpenShopResultView(){
                     
                 }
             });
+}
+
+function replaceAll(find, replace, str) {
+  return str.replace(new RegExp(find, 'g'), replace);
+}
+
+function OpenShopInfoView(_ShopId, _ShopName){    
+    $.ajax({
+                url: hostURLService + "api_shop.php",
+                type: "POST",
+                dataType: "json",
+                data: { methodname: "getshopinfo"
+                    , shopid: _ShopId
+                },
+                beforeSend: function () {                                        
+                    
+                },
+                success: function (data) {                    
+                    xhReq.open("GET", "InfoTienda.html", false);
+                    xhReq.send(null);    
+                    document.getElementById("titulo").innerHTML='<h2>'+_ShopName+'<h2>';  
+                    var template = xhReq.responseText;
+                    
+                     if ($.isEmptyObject(data)) {
+                        onBackKeyDown();
+                        removeClass('hidden',document.getElementById('popUpError'));
+                        document.getElementById('error-message').innerHTML = "No hay información.";
+                    }else{                  
+                        var oUL = "<ul id='ShopDetails'>";
+                        for(var index in data){
+                            var detail = data[index];
+                            switch (detail.Name){
+                                case "logo":                                    
+                                    template = replaceAll("%logofilename%",detail.Contend, template);
+                                    break;
+                                case "map":
+                                    template = replaceAll("%mapfilename%",detail.Contend,template);
+                                    break;
+                                case "BasicInfo":
+                                    var basicinfo = detail.Contend.split("**");  
+                                    inicioConf['tienda']['name']=detail.ShopId + "**" + basicinfo[0];
+                                    inicioConf['tienda']['status']=1;
+                                    template = replaceAll("%name%",basicinfo[0],template);
+                                    template = replaceAll("%local%",basicinfo[1],template);
+                                    break;
+                                default:
+                                    oUL += "<li>" + detail.Name + ": " + detail.Contend +"</li>";
+                                    break;
+                            }  
+                        }                        
+                        oUL += "</ul>";
+                        template = replaceAll("%shopdetails%",oUL,template);
+                    }
+                    
+                    document.getElementById("content-page").innerHTML = template; 
+                    var myScroll;
+                    myScroll = new iScroll('wrapper', { hideScrollbar: true });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error " + textStatus);
+                    console.log("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });
+}
+
+function GetShopMapView(_logofilename,_mapfilename){
+    xhReq.open("GET","mapatienda.html", false);
+    xhReq.send(null);
+    var template = xhReq.responseText;
+    template = replaceAll("%logofilename%",_logofilename,template);
+    template = replaceAll("%mapfilename%",_mapfilename,template);
+    document.getElementById("content-page").innerHTML=template;
+    //document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
+    document.getElementById('shop').value = 'Info ' + inicioConf['tienda']['name'].split("**")[1];
+    document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
+    document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
 }
 
 function info(dato){
@@ -333,7 +418,7 @@ function agregarInicio(){
 function submitSearch(thisButton){
     if(habilitarSubmit()){
         OpenShopResultView();
-        document.getElementById('shop').value = 'Info ' + inicioConf['tienda']['name'].split("**")[1];                
+        document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];                
     }else{
         removeClass('hidden',document.getElementById('popUpError'));
     }
