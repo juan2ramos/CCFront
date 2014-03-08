@@ -357,6 +357,56 @@ function OpenShopInfoView(_ShopId, _ShopName){
                     }
                     
                     document.getElementById("content-page").innerHTML = template; 
+                    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+                    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+                    var myScroll;
+                    myScroll = new iScroll('wrapper', { hideScrollbar: true });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error " + textStatus);
+                    console.log("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });
+}
+
+function OpenCCInfoView(_MallId){    
+    $.ajax({
+                url: hostURLService + "api_mall.php",
+                type: "POST",
+                dataType: "jsonp",
+                data: { methodname: "getmallbyid"
+                    , mallid: _MallId
+                },
+                beforeSend: function () {                                        
+                    
+                },
+                success: function (data) {                    
+                    xhReq.open("GET", "ccInfo.html", false);
+                    xhReq.send(null);                        
+                    var template = xhReq.responseText;
+                    
+                     if ($.isEmptyObject(data)) {
+                        onBackKeyDown();
+                        removeClass('hidden',document.getElementById('popUpError'));
+                        document.getElementById('error-message').innerHTML = "No hay información.";
+                    }else{      
+                        var mall = data[0];
+                        document.getElementById("titulo").innerHTML='<h2>'+mall.Name+'<h2>';  
+                        template = replaceAll("%logofilename%",mall.LogoFileName, template);
+                        template = replaceAll("%name%",mall.Name, template);
+                        template = replaceAll("%address%",mall.Address, template);
+                        template = replaceAll("%phonenumbers%",mall.PhoneNumbers, template);
+                        template = replaceAll("%horary%",mall.Horary, template);
+                        template = replaceAll("%description%",mall.Description, template);                        
+                        template = replaceAll("%mallid%",mall.Id, template);
+                    }
+                    
+                    document.getElementById("content-page").innerHTML = template; 
+                    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+                    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
                     var myScroll;
                     myScroll = new iScroll('wrapper', { hideScrollbar: true });
                 },
@@ -378,7 +428,8 @@ function GetShopMapView(_logofilename,_mapfilename){
     template = replaceAll("%mapfilename%",_mapfilename,template);
     document.getElementById("content-page").innerHTML=template;
     //document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['tienda']['name'].split("**")[1];
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
     document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
     document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
 }
@@ -389,6 +440,7 @@ function info(dato){
     document.getElementById("content-page").innerHTML=xhReq.responseText;
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
     document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
+    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
     inicioConf['tienda']['name']=dato;
 }
 function publicidad(){
@@ -419,6 +471,7 @@ function submitSearch(thisButton){
     if(habilitarSubmit()){
         OpenShopResultView();
         document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];                
+        document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
     }else{
         removeClass('hidden',document.getElementById('popUpError'));
     }
@@ -429,9 +482,10 @@ function submitMapa(thisButton){
     xhReq.send(null);
     document.getElementById("content-page").innerHTML=xhReq.responseText;
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
-    document.getElementById('cc-nombre').innerHTML=inicioConf['cc']['name'];
-    document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'];
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+    document.getElementById('cc-nombre').innerHTML=inicioConf['cc']['name'].split("**")[1];
+    document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
 }
 function habilitarSubmit(){
     if (inicioConf['ciudad']['name'] !== 'Ciudad' && inicioConf['cc']['name'] !== 'Centro Comercial' && inicioConf['categoria']['name'] !== 'Categoria' ){
@@ -446,12 +500,14 @@ function mapasSitio(){
     xhReq.send(null);
     document.getElementById("content-page").innerHTML=xhReq.responseText;
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
 }
 function comoLlegar(){
     menu('cctransport_list');
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
 }
 function infoCCButon(){
     menu('ccInfo');

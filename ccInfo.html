@@ -2,19 +2,19 @@
                   <div class="sub-title"><h2>CENTRO COMERCIAL</h2></div>
                   <ul>
                       <li>
-                        <span id="tienda">Tennis</span> - <span id="cc">CC Bima</span>
+                        <span id="tienda">%name%
                       </li>
-                      <li id="local">Local N - 222</li>
-                      <li id="horario">Plazoleta Principal</li>
-                      <li id="horario">2 piso</li>
-                      <li id="horario">Horario de 8 a 9</li>
+                      <li>Dirección: %address%</li>
+                      <li>Números de contacto: %phonenumbers%</li>
+                      <li>Horarios: %horary%</li>
+                      <li>Descripción: %description%</li>
                   </ul>
                   <div id="buttons-cc">
                         <figure>
-                              <img src="img/logobima.png" alt="">
+                              <img src="img/upload_images/logo_mall/%logofilename%" alt="">
                         </figure>
-                        <input type="button" class="input-ccInnfo"  onclick="mapasSitio(this); return false;" value="MAPAS INTERNOS">
-                        <input type="button" class="input-ccInnfo" onclick="comoLlegar(); return false;" value="CÓMO LLEGAR? ">
+                        <input type="button" id="level_maps_mall" class="input-ccInnfo"  onclick="mapasSitio('%mallid%'); return false;" value="MAPAS INTERNOS">
+                        <input type="button" id="cctransport" class="input-cclevelsmaps" onclick="comoLlegar('%mallid%'); return false;" value="CÓMO LLEGAR? ">
                   </div>
             </section>
 
