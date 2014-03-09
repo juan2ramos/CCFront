@@ -525,6 +525,9 @@ function GetShopMapView(_logofilename,_mapfilename,_MallId,_MallName){
     template = replaceAll("%logofilename%",_logofilename,template);
     template = replaceAll("%mapfilename%",_mapfilename,template);
     document.getElementById("content-page").innerHTML=template;
+    //document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
+    document.getElementById('shop').value = 'Info ' + _mallname;
+    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+_mallid+"'); return false;");
     if(_MallId === null){
        _MallId = inicioConf['cc']['name'].split("**")[0];
        _MallName = inicioConf['cc']['name'].split("**")[1];
