@@ -537,7 +537,7 @@ function mapasSitio(){
     $.ajax({
                 url: hostURLService + "api_mall.php",
                 type: "POST",
-                dataType: "json",
+                dataType: "jsonp",
                 data: { methodname: "getmalluisbyid"
                     , mallid: _mallid
                 },

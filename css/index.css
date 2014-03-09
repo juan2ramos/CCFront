@@ -153,6 +153,12 @@ nav{
 nav span{
     float: right;
 }
+
+nav li:active{
+    background: red;
+}
+
+
 nav li{
     border-bottom: 1px solid #eee;
     cursor: pointer;
