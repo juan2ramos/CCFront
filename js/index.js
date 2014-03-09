@@ -388,6 +388,8 @@ function OpenShopInfoView(_ShopId, _ShopName){
                                     template = replaceAll("%local%",basicinfo[1],template);
                                     MallId = basicinfo[2];
                                     MallName = basicinfo[3];
+                                    template = replaceAll("%mallid%",MallId,template);
+                                    template = replaceAll("%mallname%",MallName,template);
                                     break;
                                 default:
                                     oUL += "<li>" + detail.Name + ": " + detail.Contend +"</li>";
@@ -516,16 +518,19 @@ function OpenCCInfoView(_MallId){
             });
 }
 
-function GetShopMapView(_logofilename,_mapfilename){
+function GetShopMapView(_logofilename,_mapfilename,_MallId,_MallName){
     xhReq.open("GET","mapatienda.html", false);
     xhReq.send(null);
     var template = xhReq.responseText;
     template = replaceAll("%logofilename%",_logofilename,template);
     template = replaceAll("%mapfilename%",_mapfilename,template);
     document.getElementById("content-page").innerHTML=template;
-    //document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
-    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+    if(_MallId === null){
+       _MallId = inicioConf['cc']['name'].split("**")[0];
+       _MallName = inicioConf['cc']['name'].split("**")[1];
+    }
+    document.getElementById('shop').value = 'Info ' + _MallName;
+    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+_MallId+"'); return false;");
     document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
     document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
 }
