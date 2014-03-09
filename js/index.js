@@ -324,6 +324,8 @@ function OpenShopResultView(){
                             oLI.appendChild(document.createTextNode(shop.Name));
                             oUL.insertBefore(oLI, oUL.childNodes[0]);
                         }
+                        document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+                        document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
                         var myScroll;
                         myScroll = new iScroll('wrapper', { hideScrollbar: true });
                
