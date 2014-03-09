@@ -346,6 +346,7 @@ function replaceAll(find, replace, str) {
 }
 
 function OpenShopInfoView(_ShopId, _ShopName){    
+    var Mall;
     $.ajax({
                 url: hostURLService + "api_shop.php",
                 type: "POST",
@@ -384,6 +385,7 @@ function OpenShopInfoView(_ShopId, _ShopName){
                                     inicioConf['tienda']['status']=1;
                                     template = replaceAll("%name%",basicinfo[0],template);
                                     template = replaceAll("%local%",basicinfo[1],template);
+                                    Mall = basicinfo[2];
                                     break;
                                 default:
                                     oUL += "<li>" + detail.Name + ": " + detail.Contend +"</li>";
@@ -395,8 +397,8 @@ function OpenShopInfoView(_ShopId, _ShopName){
                     }
                     
                     document.getElementById("content-page").innerHTML = template; 
-                    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
-                    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+                    document.getElementById('shop').value = 'Info ' + Mall[1].split("**")[1];
+                    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+Mall[1].split("**")[0]+"'); return false;");
                     var myScroll;
                     myScroll = new iScroll('wrapper', { hideScrollbar: true });
                 },
@@ -412,7 +414,7 @@ function OpenShopInfoView(_ShopId, _ShopName){
 
 function SearchShopByName(){
     
-    var shopName = document.getElementById('ShopName');
+    var shopName = document.getElementById('ShopName').value;
     if(typeof shopName !== 'Undefinded' && shopName !== ""){
      $.ajax({
                 url: hostURLService + "api_shop.php",
@@ -447,8 +449,7 @@ function SearchShopByName(){
                             oLI.appendChild(document.createTextNode(shop.Name + " - " + shop.MallName));
                             oUL.insertBefore(oLI, oUL.childNodes[0]);
                         }
-                        document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
-                        document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+                        document.getElementById('shop').style.display="none";                       
                         var myScroll;
                         myScroll = new iScroll('wrapper', { hideScrollbar: true });
                
