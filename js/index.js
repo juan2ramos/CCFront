@@ -117,9 +117,30 @@ function select(dato, sitio){
       agregarInicio();
 }
 function select_trasportType(tipoTransporte, IdCommercial){
-    xhReq.open("GET", "cctrasnport_info.html", false);
-    xhReq.send(null);
-    document.getElementById("content-page").innerHTML=xhReq.responseText;
+     $.ajax({
+                url: hostURLService + "api_mall_transport.php",
+                type:'POST', 
+                data: { methodname: "getmalltransportbytype"
+                    , mallid: IdCommercial
+                    , type: tipoTransporte
+                }, 
+                dataType:'jsonp',
+                beforeSend: function () {                    
+                },
+                success: function (data) {
+                    xhReq.open("GET", "cctrasnport_info.html", false);
+                    xhReq.send(null);
+                    document.getElementById("content-page").innerHTML = xhReq.responseText;
+                    document.getElementById("contend-transport").innerHTML = data[0].Description;
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error " + textStatus);
+                    console.log("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });    
 }
 function menu(opcion){ 
     xhReq.open("GET", opcion+".html", false);
@@ -504,10 +525,14 @@ function mapasSitio(){
     document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
 }
 function comoLlegar(){
-    menu('cctransport_list');
-    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
-    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+    xhReq.open("GET", "cctransport_list.html", false);
+    xhReq.send(null);
+    document.getElementById("titulo").innerHTML='<h2>Transporte<h2>';
+    var template = xhReq.responseText;
+    template = replaceAll("%mallid%",inicioConf['cc']['name'].split("**")[0],template);
+    document.getElementById("content-page").innerHTML=template;    
+    var myScroll;
+    myScroll = new iScroll('wrapper', { hideScrollbar: true });    
 }
 function infoCCButon(){
     menu('ccInfo');
