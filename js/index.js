@@ -117,9 +117,31 @@ function select(dato, sitio){
       agregarInicio();
 }
 function select_trasportType(tipoTransporte, IdCommercial){
-    xhReq.open("GET", "cctrasnport_info.html", false);
-    xhReq.send(null);
-    document.getElementById("content-page").innerHTML=xhReq.responseText;
+     $.ajax({
+                url: hostURLService + "api_mall_transport.php",
+                type:'POST', 
+                data: { methodname: "getmalltransportbytype"
+                    , mallid: IdCommercial
+                    , type: tipoTransporte
+                }, 
+                dataType:'jsonp',
+                beforeSend: function () {                    
+                },
+                success: function (data) {
+                    xhReq.open("GET", "cctrasnport_info.html", false);
+                    xhReq.send(null);
+                    document.getElementById("content-page").innerHTML = xhReq.responseText;
+                    document.getElementById("contend-transport").innerHTML = data[0].Description;
+                    document.getElementById("header-transport").innerHTML = "<h3>" + tipoTransporte.toUpperCase() + "</h3>";
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error " + textStatus);
+                    console.log("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });    
 }
 function menu(opcion){ 
     xhReq.open("GET", opcion+".html", false);
@@ -371,6 +393,56 @@ function OpenShopInfoView(_ShopId, _ShopName){
                     }
                     
                     document.getElementById("content-page").innerHTML = template; 
+                    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+                    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+                    var myScroll;
+                    myScroll = new iScroll('wrapper', { hideScrollbar: true });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error " + textStatus);
+                    console.log("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });
+}
+
+function OpenCCInfoView(_MallId){    
+    $.ajax({
+                url: hostURLService + "api_mall.php",
+                type: "POST",
+                dataType: "jsonp",
+                data: { methodname: "getmallbyid"
+                    , mallid: _MallId
+                },
+                beforeSend: function () {                                        
+                    
+                },
+                success: function (data) {                    
+                    xhReq.open("GET", "ccInfo.html", false);
+                    xhReq.send(null);                        
+                    var template = xhReq.responseText;
+                    
+                     if ($.isEmptyObject(data)) {
+                        onBackKeyDown();
+                        removeClass('hidden',document.getElementById('popUpError'));
+                        document.getElementById('error-message').innerHTML = "No hay información.";
+                    }else{      
+                        var mall = data[0];
+                        document.getElementById("titulo").innerHTML='<h2>'+mall.Name+'<h2>';  
+                        template = replaceAll("%logofilename%",mall.LogoFileName, template);
+                        template = replaceAll("%name%",mall.Name, template);
+                        template = replaceAll("%address%",mall.Address, template);
+                        template = replaceAll("%phonenumbers%",mall.PhoneNumbers, template);
+                        template = replaceAll("%horary%",mall.Horary, template);
+                        template = replaceAll("%description%",mall.Description, template);                        
+                        template = replaceAll("%mallid%",mall.Id, template);
+                    }
+                    
+                    document.getElementById("content-page").innerHTML = template; 
+                    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+                    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
                     var myScroll;
                     myScroll = new iScroll('wrapper', { hideScrollbar: true });
                 },
@@ -392,7 +464,8 @@ function GetShopMapView(_logofilename,_mapfilename){
     template = replaceAll("%mapfilename%",_mapfilename,template);
     document.getElementById("content-page").innerHTML=template;
     //document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['tienda']['name'].split("**")[1];
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
     document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
     document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
 }
@@ -403,6 +476,7 @@ function info(dato){
     document.getElementById("content-page").innerHTML=xhReq.responseText;
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
     document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
+    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
     inicioConf['tienda']['name']=dato;
 }
 function publicidad(){
@@ -433,6 +507,7 @@ function submitSearch(thisButton){
     if(habilitarSubmit()){
         OpenShopResultView();
         document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];                
+        document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
     }else{
         removeClass('hidden',document.getElementById('popUpError'));
     }
@@ -443,9 +518,10 @@ function submitMapa(thisButton){
     xhReq.send(null);
     document.getElementById("content-page").innerHTML=xhReq.responseText;
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
-    document.getElementById('cc-nombre').innerHTML=inicioConf['cc']['name'];
-    document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'];
+    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+    document.getElementById('cc-nombre').innerHTML=inicioConf['cc']['name'].split("**")[1];
+    document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
 }
 function habilitarSubmit(){
     if (inicioConf['ciudad']['name'] !== 'Ciudad' && inicioConf['cc']['name'] !== 'Centro Comercial' && inicioConf['categoria']['name'] !== 'Categoria' ){
@@ -456,16 +532,60 @@ function habilitarSubmit(){
     return false;
 }
 function mapasSitio(){
-    xhReq.open("GET","mapasCC.html", false);
-    xhReq.send(null);
-    document.getElementById("content-page").innerHTML=xhReq.responseText;
-    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
+    var _mallid = inicioConf["cc"]['name'].split('**')[0];
+    var _mallcategoryid =inicioConf["categoria"]['name'].split('**')[0];
+    $.ajax({
+                url: hostURLService + "api_mall.php",
+                type: "POST",
+                dataType: "json",
+                data: { methodname: "getmalluisbyid"
+                    , mallid: _mallid
+                },
+                beforeSend: function () {                                        
+                },
+                success: function (data) {
+                     if ($.isEmptyObject(data)) {
+                        onBackKeyDown();
+                        removeClass('hidden',document.getElementById('popUpError'));
+                        document.getElementById('error-message').innerHTML = "No hay tiendas.";
+                    }else{
+                        xhReq.open("GET","mapasCC.html", false);
+                        xhReq.send(null);
+                        var template = xhReq.responseText;                        
+                        var imagesdiv = "";
+                        var popupdiv = "";
+                        for(var floor in data){
+                            imagesdiv += "<figure class=\"logo-cc\" onclick=\"mallfloorZoom('"+data[floor].SourceName+"'); return false;\">";
+                            imagesdiv += "<img src=\"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></figure>";                                        		                 	
+                            popupdiv += "<div id=\""+data[floor].SourceName+"\" class=\"popUp-image hidden\" ><div id=\"close\" onclick=\"closePopUp('"+data[floor].SourceName+"'); return false;\">X</div>";
+                            popupdiv +="<figure><div><div><img src=\"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></div></div></figure></div>"
+                        }
+                        template = replaceAll("%imagesdiv%",imagesdiv,template);
+                        template = replaceAll("%popupdiv%",popupdiv,template);
+                        document.getElementById("content-page").innerHTML=template;
+                        document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
+                        document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+                        document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error " + textStatus);
+                    console.log("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });    
 }
 function comoLlegar(){
-    menu('cctransport_list');
-    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
+    xhReq.open("GET", "cctransport_list.html", false);
+    xhReq.send(null);
+    document.getElementById("titulo").innerHTML='<h2>Transporte<h2>';
+    var template = xhReq.responseText;
+    template = replaceAll("%mallid%",inicioConf['cc']['name'].split("**")[0],template);
+    document.getElementById("content-page").innerHTML=template;    
+    var myScroll;
+    myScroll = new iScroll('wrapper', { hideScrollbar: true });    
 }
 function infoCCButon(){
     menu('ccInfo');
@@ -492,6 +612,10 @@ function closePopUp(){
   addClass('hidden',document.getElementById('popUpError'));
 }
 
+function closePopUp(poUpName){
+ addClass('hidden',document.getElementById(poUpName));
+}
+
 /*
 Estados
 */  
@@ -508,12 +632,18 @@ function config(url){
 function okError(){
     addClass('hidden',document.getElementById('popUpError'));
 }
-function mapaZoom(){
-    
+function mapaZoom(){    
     removeClass('hidden',document.getElementById('popUpError'));
     var myScroll1 = new iScroll('wrappers', { zoom:true });
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-     document.addEventListener('DOMContentLoaded', loaded, false);
+    document.addEventListener('DOMContentLoaded', loaded, false);
+}
+
+function mallfloorZoom(popAppName){    
+    removeClass('hidden',document.getElementById(popAppName));
+    var myScroll1 = new iScroll('wrappers', { zoom:true });
+    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+    document.addEventListener('DOMContentLoaded', loaded, false);
 }
 
 function checkConnection() {
