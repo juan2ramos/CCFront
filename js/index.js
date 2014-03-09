@@ -132,6 +132,7 @@ function select_trasportType(tipoTransporte, IdCommercial){
                     xhReq.send(null);
                     document.getElementById("content-page").innerHTML = xhReq.responseText;
                     document.getElementById("contend-transport").innerHTML = data[0].Description;
+                    document.getElementById("header-transport").innerHTML = "<h3>" + tipoTransporte.toUpperCase() + "</h3>";
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("Error " + textStatus);
@@ -517,12 +518,50 @@ function habilitarSubmit(){
     return false;
 }
 function mapasSitio(){
-    xhReq.open("GET","mapasCC.html", false);
-    xhReq.send(null);
-    document.getElementById("content-page").innerHTML=xhReq.responseText;
-    document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
-    document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
-    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+    var _mallid = inicioConf["cc"]['name'].split('**')[0];
+    var _mallcategoryid =inicioConf["categoria"]['name'].split('**')[0];
+    $.ajax({
+                url: hostURLService + "api_mall.php",
+                type: "POST",
+                dataType: "json",
+                data: { methodname: "getmalluisbyid"
+                    , mallid: _mallid
+                },
+                beforeSend: function () {                                        
+                },
+                success: function (data) {
+                     if ($.isEmptyObject(data)) {
+                        onBackKeyDown();
+                        removeClass('hidden',document.getElementById('popUpError'));
+                        document.getElementById('error-message').innerHTML = "No hay tiendas.";
+                    }else{
+                        xhReq.open("GET","mapasCC.html", false);
+                        xhReq.send(null);
+                        var template = xhReq.responseText;                        
+                        var imagesdiv = "";
+                        var popupdiv = "";
+                        for(var floor in data){
+                            imagesdiv += "<figure class=\"logo-cc\" onclick=\"mallfloorZoom('"+data[floor].SourceName+"'); return false;\">";
+                            imagesdiv += "<img src=\"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></figure>";                                        		                 	
+                            popupdiv += "<div id=\""+data[floor].SourceName+"\" class=\"popUp-image hidden\" ><div id=\"close\" onclick=\"closePopUp('"+data[floor].SourceName+"'); return false;\">X</div>";
+                            popupdiv +="<figure><div><div><img src=\"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></div></div></figure></div>"
+                        }
+                        template = replaceAll("%imagesdiv%",imagesdiv,template);
+                        template = replaceAll("%popupdiv%",popupdiv,template);
+                        document.getElementById("content-page").innerHTML=template;
+                        document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
+                        document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
+                        document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error " + textStatus);
+                    console.log("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });    
 }
 function comoLlegar(){
     xhReq.open("GET", "cctransport_list.html", false);
@@ -559,6 +598,10 @@ function closePopUp(){
   addClass('hidden',document.getElementById('popUpError'));
 }
 
+function closePopUp(poUpName){
+ addClass('hidden',document.getElementById(poUpName));
+}
+
 /*
 Estados
 */  
@@ -575,12 +618,18 @@ function config(url){
 function okError(){
     addClass('hidden',document.getElementById('popUpError'));
 }
-function mapaZoom(){
-    
+function mapaZoom(){    
     removeClass('hidden',document.getElementById('popUpError'));
     var myScroll1 = new iScroll('wrappers', { zoom:true });
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-     document.addEventListener('DOMContentLoaded', loaded, false);
+    document.addEventListener('DOMContentLoaded', loaded, false);
+}
+
+function mallfloorZoom(popAppName){    
+    removeClass('hidden',document.getElementById(popAppName));
+    var myScroll1 = new iScroll('wrappers', { zoom:true });
+    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+    document.addEventListener('DOMContentLoaded', loaded, false);
 }
 
 function checkConnection() {
