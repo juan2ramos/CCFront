@@ -557,7 +557,7 @@ function mapasSitio(){
                         for(var floor in data){
                             imagesdiv += "<figure class=\"logo-cc\" onclick=\"mallfloorZoom('"+data[floor].SourceName+"'); return false;\">";
                             imagesdiv += "<img src=\"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></figure>";                                        		                 	
-                            popupdiv += "<div id=\""+data[floor].SourceName+"\" class=\"popUp-image hidden\" ><div id=\"close\" onclick=\"closePopUp('"+data[floor].SourceName+"'); return false;\">X</div>";
+                            popupdiv += "<div id=\""+data[floor].SourceName+"\" class=\"popUp-image hidden\" ><div id=\"close\" onclick=\"dymClosePopUp('"+data[floor].SourceName+"'); return false;\">X</div>";
                             popupdiv +="<figure><div><div><img src=\"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></div></div></figure></div>"
                         }
                         template = replaceAll("%imagesdiv%",imagesdiv,template);
@@ -608,11 +608,10 @@ function removeClass( classname, element ) {
     element.className = cn;
 }
 function closePopUp(){
-
   addClass('hidden',document.getElementById('popUpError'));
 }
 
-function closePopUp(poUpName){
+function dymClosePopUp(poUpName){
  addClass('hidden',document.getElementById(poUpName));
 }
 
