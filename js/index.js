@@ -479,9 +479,10 @@ function OpenCCInfoView(_MallId){
                     , mallid: _MallId
                 },
                 beforeSend: function () {                                        
-                    
+                    removeClass('hidden',document.getElementById('load-element'));
                 },
-                success: function (data) {                    
+                success: function (data) {  
+                    addClass('hidden',document.getElementById('load-element'));                  
                     xhReq.open("GET", "ccInfo.html", false);
                     xhReq.send(null);                        
                     var template = xhReq.responseText;
@@ -607,9 +608,11 @@ function mapasSitio(){
                 data: { methodname: "getmalluisbyid"
                     , mallid: _mallid
                 },
-                beforeSend: function () {                                        
+                beforeSend: function () {  
+                removeClass('hidden',document.getElementById('load-element'));                                      
                 },
                 success: function (data) {
+                     addClass('hidden',document.getElementById('load-element'));
                      if ($.isEmptyObject(data)) {
                         onBackKeyDown();
                         removeClass('hidden',document.getElementById('popUpError'));
