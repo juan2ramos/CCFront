@@ -159,7 +159,9 @@ function OpenCityListView(){
                 type:'POST', 
                 data:term, 
                 dataType:'jsonp',
-                beforeSend: function () {                    
+                beforeSend: function () {
+                removeClass('hidden',document.getElementById('load-element'));  
+                                  
                     xhReq.open("GET", "ciudad.html", false);
                     xhReq.send(null);
                     document.getElementById("titulo").innerHTML='<h2>Ciudad<h2>';
@@ -168,6 +170,7 @@ function OpenCityListView(){
                     myScroll = new iScroll('wrapper', { hideScrollbar: true });
                 },
                 success: function (data) {
+                    addClass('hidden',document.getElementById('load-element'));
                     var oUL = document.getElementById('CityList');
                     for(var index in data){
                         var city = data[index];
@@ -198,14 +201,15 @@ function OpenMallListView(){
                 dataType: "jsonp",
                 data: { methodname: "getmalllistbycityid", cityid: inicioConf["ciudad"]['name'].split('**')[0] },
                 beforeSend: function () {                    
+                     removeClass('hidden',document.getElementById('load-element')); 
+                },
+                success: function (data) {
+                    addClass('hidden',document.getElementById('load-element')); 
                     xhReq.open("GET", "cc.html", false);
                     xhReq.send(null);
                     document.getElementById("titulo").innerHTML='<h2>Centro Comercial<h2>';
                     document.getElementById("content-page").innerHTML=xhReq.responseText;    
-                    var myScroll;
-                    myScroll = new iScroll('wrapper', { hideScrollbar: true });
-                },
-                success: function (data) {
+                   
                     var oUL = document.getElementById('MallList');
                     for(var index in data){
                         var mall = data[index];
@@ -215,6 +219,8 @@ function OpenMallListView(){
                         oLI.appendChild(document.createTextNode(mall.Name));
                         oUL.insertBefore(oLI, oUL.childNodes[0]);
                     }
+                    var myScroll;
+                    myScroll = new iScroll('wrapper', { hideScrollbar: true });
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("Error " + textStatus);
@@ -239,19 +245,20 @@ function OpenMallCateogryListView(){
                 dataType: "jsonp",
                 data: { methodname: "getcategorylistbymallid", mallid: inicioConf["cc"]['name'].split('**')[0] },
                 beforeSend: function () {                    
-                    xhReq.open("GET", "categoria.html", false);
-                    xhReq.send(null);
-                    document.getElementById("titulo").innerHTML='<h2>Categoria<h2>';
-                    document.getElementById("content-page").innerHTML=xhReq.responseText;    
-                    var myScroll;
-                    myScroll = new iScroll('wrapper', { hideScrollbar: true });
+                    removeClass('hidden',document.getElementById('load-element')); 
                 },
                 success: function (data) {
+                    addClass('hidden',document.getElementById('load-element')); 
                     if ($.isEmptyObject(data)) {
                         onBackKeyDown();
                         removeClass('hidden',document.getElementById('popUpError'));
                         document.getElementById('error-message').innerHTML = "No hay categorías";
                     }else{
+                        xhReq.open("GET", "categoria.html", false);
+                        xhReq.send(null);
+                        document.getElementById("titulo").innerHTML='<h2>Categoria<h2>';
+                        document.getElementById("content-page").innerHTML=xhReq.responseText;    
+                    
                         var oUL = document.getElementById('MallCategoryList');
                         for(var index in data){
                             var mall = data[index];
@@ -261,6 +268,8 @@ function OpenMallCateogryListView(){
                             oLI.appendChild(document.createTextNode(mall.Name));
                             oUL.insertBefore(oLI, oUL.childNodes[0]);
                         }
+                        var myScroll;
+                      myScroll = new iScroll('wrapper', { hideScrollbar: true });
                     }
                     
                 },
@@ -285,26 +294,27 @@ function OpenShopResultView(){
     $.ajax({
                 url: hostURLService + "api_shop.php",
                 type: "POST",
-                dataType: "json",
+                dataType: "jsonp",
                 data: { methodname: "getshoplistbyparams"
                     , name: "" 
                     , mallid: _mallid
                     , mallcategoryid: _mallcategoryid
                 },
-                beforeSend: function () {                    
-                    xhReq.open("GET", "tiendas.html", false);
-                    xhReq.send(null);
-                    document.getElementById("titulo").innerHTML='<h2>Tiendas<h2>';
-                    document.getElementById("content-page").innerHTML=xhReq.responseText;    
-                    var myScroll;
-                    myScroll = new iScroll('wrapper', { hideScrollbar: true });
-                },
+                beforeSend: function () { 
+                    removeClass('hidden',document.getElementById('load-element'));                    
+                     },
                 success: function (data) {
+                    addClass('hidden',document.getElementById('load-element')); 
                      if ($.isEmptyObject(data)) {
                         onBackKeyDown();
                         removeClass('hidden',document.getElementById('popUpError'));
                         document.getElementById('error-message').innerHTML = "No hay tiendas.";
                     }else{
+                        xhReq.open("GET", "tiendas.html", false);
+                        xhReq.send(null);
+                        document.getElementById("titulo").innerHTML='<h2>Tiendas<h2>';
+                        document.getElementById("content-page").innerHTML=xhReq.responseText;    
+                    
                         var oUL = document.getElementById('ShopResultList');
                         for(var index in data){
                             var shop = data[index];
@@ -314,6 +324,9 @@ function OpenShopResultView(){
                             oLI.appendChild(document.createTextNode(shop.Name));
                             oUL.insertBefore(oLI, oUL.childNodes[0]);
                         }
+                        var myScroll;
+                        myScroll = new iScroll('wrapper', { hideScrollbar: true });
+               
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -334,14 +347,15 @@ function OpenShopInfoView(_ShopId, _ShopName){
     $.ajax({
                 url: hostURLService + "api_shop.php",
                 type: "POST",
-                dataType: "json",
+                dataType: "jsonp",
                 data: { methodname: "getshopinfo"
                     , shopid: _ShopId
                 },
                 beforeSend: function () {                                        
-                    
+                    removeClass('hidden',document.getElementById('load-element')); 
                 },
-                success: function (data) {                    
+                success: function (data) {    
+                    addClass('hidden',document.getElementById('load-element'));                 
                     xhReq.open("GET", "InfoTienda.html", false);
                     xhReq.send(null);    
                     document.getElementById("titulo").innerHTML='<h2>'+_ShopName+'<h2>';  

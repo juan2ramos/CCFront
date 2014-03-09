@@ -720,6 +720,22 @@ top: 10px;
   -o-transition: all 0.25s ease;
     transition: all 0.25s ease;
 }
+.loading{
+    background: rgba(233, 224, 224, 0.36);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+.loading img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -15px;
+    margin-top: -15px;
+}
+
 .delete-padding{
     padding: 0;
 }
