@@ -346,7 +346,8 @@ function replaceAll(find, replace, str) {
 }
 
 function OpenShopInfoView(_ShopId, _ShopName){    
-    var Mall;
+    var MallId;
+    var MallName;
     $.ajax({
                 url: hostURLService + "api_shop.php",
                 type: "POST",
@@ -385,7 +386,8 @@ function OpenShopInfoView(_ShopId, _ShopName){
                                     inicioConf['tienda']['status']=1;
                                     template = replaceAll("%name%",basicinfo[0],template);
                                     template = replaceAll("%local%",basicinfo[1],template);
-                                    Mall = basicinfo[2];
+                                    MallId = basicinfo[2];
+                                    MallName = basicinfo[3];
                                     break;
                                 default:
                                     oUL += "<li>" + detail.Name + ": " + detail.Contend +"</li>";
@@ -397,8 +399,8 @@ function OpenShopInfoView(_ShopId, _ShopName){
                     }
                     
                     document.getElementById("content-page").innerHTML = template; 
-                    document.getElementById('shop').value = 'Info ' + Mall[1].split("**")[1];
-                    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+Mall[1].split("**")[0]+"'); return false;");
+                    document.getElementById('shop').value = 'Info ' + MallName;
+                    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+MallId+"'); return false;");
                     var myScroll;
                     myScroll = new iScroll('wrapper', { hideScrollbar: true });
                 },
