@@ -89,6 +89,7 @@ window.onpopstate = function(event) {
     xhReq.open("GET", "inicio.html", false);
     xhReq.send(null);
     document.getElementById("content-page").innerHTML = xhReq.responseText;
+    ShopSearchByName = "";
 //        
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
     agregarInicio();
@@ -287,8 +288,8 @@ function OpenMallCateogryListView(){
     }
 }
 
+var ShopSearchByName = "";
 function OpenShopResultView(){
-    
     var _mallid = inicioConf["cc"]['name'].split('**')[0];
     var _mallcategoryid =inicioConf["categoria"]['name'].split('**')[0];
     $.ajax({
@@ -328,6 +329,7 @@ function OpenShopResultView(){
                         document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
                         var myScroll;
                         myScroll = new iScroll('wrapper', { hideScrollbar: true });
+                        document.getElementById('back').setAttribute("onclick", "onBackKeyDown(); return false;");    
                
                     }
                 },
@@ -338,7 +340,7 @@ function OpenShopResultView(){
                 complete: function () {
                     
                 }
-            });
+            });        
 }
 
 function replaceAll(find, replace, str) {
@@ -400,6 +402,14 @@ function OpenShopInfoView(_ShopId, _ShopName){
                         template = replaceAll("%shopdetails%",oUL,template);
                     }
                     
+                    if(ShopSearchByName === "")
+                    {                    
+                        document.getElementById('back').setAttribute("onclick", "OpenShopResultView(); return false;");
+                    }
+                    else
+                    {
+                        document.getElementById('back').setAttribute("onclick", "onBackKeyDown(); return false;");                              
+                    }
                     document.getElementById("content-page").innerHTML = template; 
                     document.getElementById('shop').value = 'Info ' + MallName;
                     document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+MallId+"'); return false;");
@@ -419,6 +429,7 @@ function OpenShopInfoView(_ShopId, _ShopName){
 function SearchShopByName(){
     
     var shopName = document.getElementById('ShopName').value;
+    ShopSearchByName = shopName;
     if(typeof shopName !== 'Undefinded' && shopName !== ""){
      $.ajax({
                 url: hostURLService + "api_shop.php",
@@ -456,6 +467,7 @@ function SearchShopByName(){
                         document.getElementById('shop').style.display="none";                       
                         var myScroll;
                         myScroll = new iScroll('wrapper', { hideScrollbar: true });
+                        CheckShopSearchByName = true;
                
                     }
                 },
@@ -532,6 +544,7 @@ function GetShopMapView(_logofilename,_mapfilename,_MallId,_MallName){
        _MallName = inicioConf['cc']['name'].split("**")[1];
     }
     document.getElementById('shop').value = 'Info ' + _MallName;
+    document.getElementById('back').setAttribute("onclick", "OpenShopInfoView('"+inicioConf['tienda']['name'].split("**")[0]+"', '"+inicioConf['tienda']['name'].split("**")[1]+"'); return false;");
     document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+_MallId+"'); return false;");
     document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
     document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
@@ -785,3 +798,42 @@ function loading(){
     var template = "";
     
 }    
+
+function OpenCityConfigurationView(){       
+        var term = {methodname:"getcitylist"};           
+        $.ajax({
+                url: hostURLService + "api_city.php",
+                type:'POST', 
+                data:term, 
+                dataType:'jsonp',
+                beforeSend: function () {
+                    removeClass('hidden',document.getElementById('load-element'));                                    
+                    xhReq.open("GET", "ciudad.html", false);
+                    xhReq.send(null);
+                    document.getElementById("titulo").innerHTML='<h2>Ciudad<h2>';
+                    document.getElementById("content-page").innerHTML=xhReq.responseText;    
+                    var myScroll;
+                    myScroll = new iScroll('wrapper', { hideScrollbar: true });
+                },
+                success: function (data) {
+                    addClass('hidden',document.getElementById('load-element'));
+                    var oUL = document.getElementById('CityList');
+                    for(var index in data){
+                        var city = data[index];
+                        var oLI = document.createElement('li');
+                        oLI.setAttribute("id", city.Id); 
+                        oLI.setAttribute("onclick", "selectcitydefault('"+city.Id+"**"+city.Name+"', 'ciudad'); return false;"); 
+                        oLI.appendChild(document.createTextNode(city.Name));
+                        oUL.insertBefore(oLI, oUL.childNodes[0]);
+                    }
+                    document.getElementById('back').setAttribute("onclick", "config('config-apliko'); return false;"); 
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error " + textStatus);
+                    console.log("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });
+}
