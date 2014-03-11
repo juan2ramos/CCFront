@@ -90,30 +90,24 @@ window.onpopstate = function(event) {
     xhReq.send(null);
     document.getElementById("content-page").innerHTML = xhReq.responseText;
     ShopSearchByName = "";
-//        
+    SetPromoImage("general",null);
     document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
     agregarInicio();
     
     }
 function loadHome(){
-//    console.log('Received Event: ' + id); 
         xhReq.open("GET", "inicio.html", false);
         xhReq.send(null);
-        document.getElementById("content-page").innerHTML = xhReq.responseText;
-//        var parentElement = document.getElementById(id);
-//        var listeningElement = parentElement.querySelector('.listening');
-//        var receivedElement = parentElement.querySelector('.received');
-//        
-//        listeningElement.setAttribute('style', 'display:none;');
-//        receivedElement.setAttribute('style', 'display:block;');  
+        document.getElementById("content-page").innerHTML = xhReq.responseText
+        SetPromoImage("general",null);  
 }
 function select(dato, sitio){    
       xhReq.open("GET", "inicio.html", false);
       xhReq.send(null);
-      document.getElementById("content-page").innerHTML=xhReq.responseText;
-     
+      document.getElementById("content-page").innerHTML=xhReq.responseText;     
       inicioConf[sitio]['name']=dato;
       inicioConf[sitio]['status']=1;
+            SetPromoImage("general",null);
       habilitarSubmit();
       agregarInicio();
 }
@@ -143,6 +137,7 @@ function select_trasportType(tipoTransporte, IdCommercial){
                     
                 }
             });    
+            SetPromoImage("mall",IdCommercial);  
 }
 function menu(opcion){ 
     xhReq.open("GET", opcion+".html", false);
@@ -151,6 +146,7 @@ function menu(opcion){
     document.getElementById("content-page").innerHTML=xhReq.responseText;    
     var myScroll;
     myScroll = new iScroll('wrapper', { hideScrollbar: true });
+    SetPromoImage("general",null);  
 }
 function OpenCityListView(){       
         var term = {methodname:"getcitylist"};  
@@ -190,6 +186,7 @@ function OpenCityListView(){
                     
                 }
             });
+            SetPromoImage("general",null);  
 }
 
 function OpenMallListView(){ 
@@ -236,6 +233,7 @@ function OpenMallListView(){
         document.getElementById('error-message').innerHTML = "Debes seleccionar la ciudad";
     
     }
+    SetPromoImage("general",null);  
 }
 
 function OpenMallCateogryListView(){
@@ -269,6 +267,7 @@ function OpenMallCateogryListView(){
                             oLI.appendChild(document.createTextNode(mall.Name));
                             oUL.insertBefore(oLI, oUL.childNodes[0]);
                         }
+                        SetPromoImage("mall",inicioConf["cc"]['name'].split('**')[0]);  
                         var myScroll;
                       myScroll = new iScroll('wrapper', { hideScrollbar: true });
                     }
@@ -284,7 +283,7 @@ function OpenMallCateogryListView(){
             });
     }else{
         removeClass('hidden',document.getElementById('popUpError'));
-        document.getElementById('error-message').innerHTML = "Debes seleccionar todas las opciones";
+        document.getElementById('error-message').innerHTML = "Debes seleccionar todas las opciones";        
     }
 }
 
@@ -327,6 +326,7 @@ function OpenShopResultView(){
                         }
                         document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
                         document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+                        SetPromoImage("mall",inicioConf["cc"]['name'].split('**')[0]);  
                         var myScroll;
                         myScroll = new iScroll('wrapper', { hideScrollbar: true });
                         document.getElementById('back').setAttribute("onclick", "onBackKeyDown(); return false;");    
@@ -413,6 +413,7 @@ function OpenShopInfoView(_ShopId, _ShopName){
                     document.getElementById("content-page").innerHTML = template; 
                     document.getElementById('shop').value = 'Info ' + MallName;
                     document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+MallId+"'); return false;");
+                    SetPromoImage("shop",_ShopId);  
                     var myScroll;
                     myScroll = new iScroll('wrapper', { hideScrollbar: true });
                 },
@@ -479,7 +480,9 @@ function SearchShopByName(){
                     
                 }
             });   
+            SetPromoImage("general",null);  
     }
+    
 }
 
 function OpenCCInfoView(_MallId){    
@@ -517,7 +520,7 @@ function OpenCCInfoView(_MallId){
                     
                     document.getElementById("content-page").innerHTML = template; 
                     document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
-                    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+                    document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");                                        
                     var myScroll;
                     myScroll = new iScroll('wrapper', { hideScrollbar: true });
                 },
@@ -529,6 +532,7 @@ function OpenCCInfoView(_MallId){
                     
                 }
             });
+            SetPromoImage("mall",_MallId);  
 }
 
 function GetShopMapView(_logofilename,_mapfilename,_MallId,_MallName){
@@ -548,6 +552,7 @@ function GetShopMapView(_logofilename,_mapfilename,_MallId,_MallName){
     document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+_MallId+"'); return false;");
     document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
     document.getElementById('tienda-nombre').innerHTML=inicioConf['tienda']['name'].split("**")[1];
+    SetPromoImage("mall",_MallId);  
 }
 
 function info(dato){
@@ -558,6 +563,7 @@ function info(dato){
     document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'];
     document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
     inicioConf['tienda']['name']=dato;
+    SetPromoImage("general",null);  
 }
 function publicidad(){
     xhReq.open("GET","publicidad.html", false);
@@ -648,6 +654,7 @@ function mapasSitio(){
                         document.getElementById("titulo").innerHTML='<figure id="logo"><img  src="img/imagotipo.png"></figure>';
                         document.getElementById('shop').value = 'Info ' + inicioConf['cc']['name'].split("**")[1];
                         document.getElementById('shop').setAttribute("onclick", "OpenCCInfoView('"+inicioConf['cc']['name'].split("**")[0]+"'); return false;");
+                        SetPromoImage("mall",_mallid);  
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -666,6 +673,7 @@ function comoLlegar(){
     var template = xhReq.responseText;
     template = replaceAll("%mallid%",inicioConf['cc']['name'].split("**")[0],template);
     document.getElementById("content-page").innerHTML=template;    
+    SetPromoImage("mall",inicioConf['cc']['name'].split("**")[0]);  
     var myScroll;
     myScroll = new iScroll('wrapper', { hideScrollbar: true });    
 }
@@ -799,12 +807,11 @@ function loading(){
     
 }    
 
-function OpenCityConfigurationView(){       
-        var term = {methodname:"getcitylist"};           
+function OpenCityConfigurationView(){                  
         $.ajax({
                 url: hostURLService + "api_city.php",
                 type:'POST', 
-                data:term, 
+                data:{methodname:"getcitylist"}, 
                 dataType:'jsonp',
                 beforeSend: function () {
                     removeClass('hidden',document.getElementById('load-element'));                                    
@@ -827,6 +834,32 @@ function OpenCityConfigurationView(){
                         oUL.insertBefore(oLI, oUL.childNodes[0]);
                     }
                     document.getElementById('back').setAttribute("onclick", "config('config-apliko'); return false;"); 
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error " + textStatus);
+                    console.log("Error" + errorThrown);
+                },
+                complete: function () {
+                    
+                }
+            });
+            SetPromoImage("general",null);  
+}
+
+function SetPromoImage(_type,_targetid){
+    $.ajax({
+                url: hostURLService + "api_promo.php",
+                type:'POST', 
+                data:{methodname:"getpromobytypeandtargetid",type:_type,targetid:_targetid}, 
+                dataType:'jsonp',
+                beforeSend: function () {
+                },
+                success: function (data) {
+                    var promo = document.getElementById('promo_image');
+                    if(promo !== null && !$.isEmptyObject(data)){
+                        var image = data[0];
+                        promo.setAttribute("src", "img/upload_promo/"+_type+"/"+image.ImageFileName);
+                    }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("Error " + textStatus);
