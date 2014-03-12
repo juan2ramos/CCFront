@@ -4,6 +4,8 @@
  * 
  */
 var hostURLService = "http://apliko.co/apliko_ccback/apiservices/";
+var hostURLBack = "http://apliko.co/apliko_ccback/";
+
 
 
 
@@ -644,9 +646,9 @@ function mapasSitio(){
                         var popupdiv = "";
                         for(var floor in data){
                             imagesdiv += "<figure class=\"logo-cc\" onclick=\"mallfloorZoom('"+data[floor].SourceName+"'); return false;\">";
-                            imagesdiv += "<img src=\"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></figure>";                                        		                 	
+                            imagesdiv += "<img src=\""+hostURLBack+"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></figure>";                                        		                 	
                             popupdiv += "<div id=\""+data[floor].SourceName+"\" class=\"popUp-image hidden\" ><div id=\"close\" onclick=\"dymClosePopUp('"+data[floor].SourceName+"'); return false;\">X</div>";
-                            popupdiv +="<figure><div><div><img src=\"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></div></div></figure></div>"
+                            popupdiv +="<figure><div><div><img src=\""+hostURLBack+"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></div></div></figure></div>"
                         }
                         template = replaceAll("%imagesdiv%",imagesdiv,template);
                         template = replaceAll("%popupdiv%",popupdiv,template);
@@ -858,7 +860,7 @@ function SetPromoImage(_type,_targetid){
                     var promo = document.getElementById('promo_image');
                     if(promo !== null && !$.isEmptyObject(data)){
                         var image = data[0];
-                        promo.setAttribute("src", "img/upload_promo/"+_type+"/"+image.ImageFileName);
+                         document.getElementById('promo_image').setAttribute("src", hostURLBack+"img/upload_promo/"+_type+"/"+image.ImageFileName.toLowerCase());
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
