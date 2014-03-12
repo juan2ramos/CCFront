@@ -191,7 +191,7 @@ ul#nav{
     margin: 5px 0 0;
 }
 .contend-button{
-    padding: 15px 0 0;  
+    padding: 5px 0 0;  
     text-align: center;
     width: 100%
 }
@@ -212,23 +212,23 @@ ul#nav{
 }
 #contend-search-button .submit-search{
     background: url(../img/search.jpg) no-repeat center top;
-    background-size: 25px 25px;
+    background-size: 20px 20px;
     border: none;
     left: 25px;
     height: 32px;
     position: absolute;
-    top: 12px;
+    top: 9px;
     width: 29px;
 
 }
 #content-page  .contend-button .parrafo{
-    margin: 0 0 13px 0;
+    margin: 0 0 2px 0;
     padding: 0;
 
 }
 
 .publicidad{
-    margin: 10px auto;
+    margin: 5px auto;
     text-align: center;
     width: 90%;
 }
@@ -240,7 +240,7 @@ ul#nav{
     border-radius: 5px;
     color: #aaa;
     font-size: 1.5em;
-    padding: 10px 8px 10px 40px;
+    padding: 5px 8px 5px 40px;
     width: 90%;
 
 }
@@ -260,7 +260,7 @@ info tienda
 }
 #content-page .contend-parrafos p{
     color: #028fe0;
-    font-size: 15px;
+    font-size: 14px;
     padding: 0;
     margin: 0;
 }
@@ -610,7 +610,7 @@ State
     display: block;
     height: 181px;
     margin: 20px auto;
-    padding: 15px;
+    padding: 14px;
     width: 90%;
     -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -743,5 +743,15 @@ top: 10px;
 }
 
 .delete-padding{
+    padding: 0;
+}
+
+#content-page .titulo{
+    margin: 0 auto;
+    padding: 5px;
+    text-align: center;
+}
+
+#content-page #contend-search{
     padding: 0;
 }

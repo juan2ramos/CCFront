@@ -55,38 +55,57 @@ var app = {
     // Application Constructor
     
     initialize: function() {
+        
         this.bindEvents();
-        FastClick.attach(document.body);
-         document.addEventListener("backbutton", onBackKeyDown, false);
         loadHome();
-        checkConnection();
+
     },
     // Bind Event Listeners
     //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, true);
+        document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);
        app.receivedEvent('deviceready');
     },
 
 
 
     receivedEvent: function(id) {
-          
+          FastClick.attach(document.body);
+         document.addEventListener("backbutton", onBackKeyDown, false);
+        
+        window.plugins.orientationLock.unlock();
+        checkConnection();
     }
 };
 window.onpopstate = function(event) {
   
 
 };
+ function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+    }
+function onSuccess(position) {
+        var element = document.getElementById('geolocation');
+        alert (position.coords.latitude);
+        element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
+                            'Longitude: '          + position.coords.longitude             + '<br />' +
+                            'Altitude: '           + position.coords.altitude              + '<br />' +
+                            'Accuracy: '           + position.coords.accuracy              + '<br />' +
+                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
+                            'Heading: '            + position.coords.heading               + '<br />' +
+                            'Speed: '              + position.coords.speed                 + '<br />' +
+                            'Timestamp: '          + position.timestamp                    + '<br />';
+    }
  function onBackKeyDown() {
     xhReq.open("GET", "inicio.html", false);
     xhReq.send(null);
