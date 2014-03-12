@@ -28,6 +28,7 @@ var hostURLBack = "http://apliko.co/apliko_ccback/";
  * under the License.
  */
  var xhReq = new XMLHttpRequest(),
+ cityDefault = "default",
      inicioConf = {
         'ciudad'    : {
             'name'          : 'Ciudad',
@@ -72,8 +73,19 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        
        app.receivedEvent('deviceready');
+       checkConnection();
+       if(window.localStorage.getItem("cityDefault") != null){
+            cityDefault = window.localStorage.getItem("cityDefault");
+            inicioConf['ciudad']['name']=cityDefault;
+            inicioConf['ciudad']['status']=1;
+            agregarInicio();
+       }
+       navigator.screenOrientation.set('portrait');
+  
+
+
     },
 
 
@@ -81,31 +93,15 @@ var app = {
     receivedEvent: function(id) {
           FastClick.attach(document.body);
          document.addEventListener("backbutton", onBackKeyDown, false);
+
         
-        window.plugins.orientationLock.unlock();
-        checkConnection();
     }
 };
 window.onpopstate = function(event) {
   
 
 };
- function onError(error) {
-        alert('code: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
-    }
-function onSuccess(position) {
-        var element = document.getElementById('geolocation');
-        alert (position.coords.latitude);
-        element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
-                            'Longitude: '          + position.coords.longitude             + '<br />' +
-                            'Altitude: '           + position.coords.altitude              + '<br />' +
-                            'Accuracy: '           + position.coords.accuracy              + '<br />' +
-                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
-                            'Heading: '            + position.coords.heading               + '<br />' +
-                            'Speed: '              + position.coords.speed                 + '<br />' +
-                            'Timestamp: '          + position.timestamp                    + '<br />';
-    }
+ 
  function onBackKeyDown() {
     xhReq.open("GET", "inicio.html", false);
     xhReq.send(null);
@@ -141,9 +137,11 @@ function select_trasportType(tipoTransporte, IdCommercial){
                     , type: tipoTransporte
                 }, 
                 dataType:'jsonp',
-                beforeSend: function () {                    
+                beforeSend: function () {  
+                    removeClass('hidden',document.getElementById('load-element'));                   
                 },
                 success: function (data) {
+                    addClass('hidden',document.getElementById('load-element')); 
                     xhReq.open("GET", "cctrasnport_info.html", false);
                     xhReq.send(null);
                     document.getElementById("content-page").innerHTML = xhReq.responseText;
@@ -663,12 +661,18 @@ function mapasSitio(){
                         var template = xhReq.responseText;                        
                         var imagesdiv = "";
                         var popupdiv = "";
+                        var i = 0;
+
                         for(var floor in data){
                             imagesdiv += "<figure class=\"logo-cc\" onclick=\"mallfloorZoom('"+data[floor].SourceName+"'); return false;\">";
                             imagesdiv += "<img src=\""+hostURLBack+"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></figure>";                                        		                 	
                             popupdiv += "<div id=\""+data[floor].SourceName+"\" class=\"popUp-image hidden\" ><div id=\"close\" onclick=\"dymClosePopUp('"+data[floor].SourceName+"'); return false;\">X</div>";
-                            popupdiv +="<figure><div><div><img src=\""+hostURLBack+"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></div></div></figure></div>"
+                            popupdiv +="<figure id='image-zoom'><div id='wrappere'><div id='scroller'><img src=\""+hostURLBack+"img/upload_images/levels_map_mall/"+data[floor].ImageFileName+"\" alt=\"\"></div></div></figure></div>"
+                            i++;
                         }
+                    
+            
+
                         template = replaceAll("%imagesdiv%",imagesdiv,template);
                         template = replaceAll("%popupdiv%",popupdiv,template);
                         document.getElementById("content-page").innerHTML=template;
@@ -731,10 +735,19 @@ Estados
 */  
 
 function config(url){
+    if(url != 'config-apliko'){
+        document.getElementById('back').setAttribute("onclick", "config('config-apliko'); return false;");
+    }else{
+      document.getElementById('back').setAttribute("onclick", "onBackKeyDown(); return false;");  
+    }
+    
     xhReq.open("GET", url+".html", false);
     xhReq.send(null);
     document.getElementById("content-page").innerHTML=xhReq.responseText;
-    document.getElementById("content-page").innerHTML=xhReq.responseText;
+    if(url=='configuracion'){
+
+        document.getElementById("cityDefault").innerHTML=cityDefault;
+    }
 
     var myScroll3;
     myScroll3 = new iScroll('wrapper', { hideScrollbar: true });
@@ -866,7 +879,11 @@ function OpenCityConfigurationView(){
             });
             SetPromoImage("general",null);  
 }
-
+function selectcitydefault(cityDefault){
+    cityDefault = window.localStorage.setItem("cityDefault", cityDefault);
+    document.getElementById("cityDefault").innerHTML= cityDefault.split('**')[0];
+    config('configuracion');
+}
 function SetPromoImage(_type,_targetid){
     $.ajax({
                 url: hostURLService + "api_promo.php",
@@ -874,8 +891,10 @@ function SetPromoImage(_type,_targetid){
                 data:{methodname:"getpromobytypeandtargetid",type:_type,targetid:_targetid}, 
                 dataType:'jsonp',
                 beforeSend: function () {
+                     removeClass('hidden',document.getElementById('load-element')); 
                 },
                 success: function (data) {
+                    addClass('hidden',document.getElementById('load-element')); 
                     var promo = document.getElementById('promo_image');
                     if(promo !== null && !$.isEmptyObject(data)){
                         var image = data[0];

@@ -251,8 +251,14 @@ info tienda
     background: #fff;
     border-radius: 7px;
     color: #028fe0;
-    margin: 0 auto 20px;
+    margin: 0 auto;
     width: 95%;
+}
+#content-info figure{
+    margin: 0;
+}
+#ul-figure li{
+    text-align: center;
 }
 .contend-parrafos {
 
@@ -476,6 +482,8 @@ State
     position: absolute;
     width: 90%;
     z-index: 1000;
+    top: 50%;
+    margin-top: -100px;
 }
 #image-zoom img{
     max-width: 100%;
